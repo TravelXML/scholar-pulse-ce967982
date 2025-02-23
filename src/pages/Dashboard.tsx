@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 const sportsData = [
   { name: 'Football', hours: 4 },
@@ -9,11 +9,11 @@ const sportsData = [
   { name: 'Tennis', hours: 1 },
 ];
 
-const activitiesData = [
-  { name: 'Music', hours: 3 },
-  { name: 'Art', hours: 2 },
-  { name: 'Dance', hours: 4 },
-  { name: 'Drama', hours: 2 },
+const communicationData = [
+  { name: 'Class', hindi: 3, english: 4 },
+  { name: 'Group Work', hindi: 4, english: 3 },
+  { name: 'Presentations', hindi: 2, english: 5 },
+  { name: 'Discussions', hindi: 5, english: 3 },
 ];
 
 export default function Dashboard() {
@@ -77,20 +77,22 @@ export default function Dashboard() {
 
         <Card className="transform transition-all hover:scale-[1.02]">
           <CardHeader>
-            <CardTitle className="text-lg">Additional Activities</CardTitle>
+            <CardTitle className="text-lg">Language Communication</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-[200px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={activitiesData}>
+                <BarChart data={communicationData}>
                   <XAxis dataKey="name" fontSize={12} />
                   <YAxis fontSize={12} />
                   <Tooltip />
-                  <Bar dataKey="hours" fill="#48BB78" radius={[4, 4, 0, 0]} />
+                  <Legend />
+                  <Bar dataKey="hindi" fill="#9b87f5" name="Hindi" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="english" fill="#0EA5E9" name="English" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <p className="text-sm text-gray-500 mt-4">Hours per week in extracurricular activities</p>
+            <p className="text-sm text-gray-500 mt-4">Communication patterns across different activities</p>
           </CardContent>
         </Card>
       </div>
