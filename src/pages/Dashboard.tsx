@@ -156,46 +156,84 @@ export default function Dashboard() {
 
       {/* Timeline Section */}
       <Card className="transform transition-all hover:scale-[1.02]">
-        <CardHeader>
-          <CardTitle className="text-lg">Student Timeline</CardTitle>
+        <CardHeader className="border-b">
+          <CardTitle className="text-xl font-semibold">Student Journey</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="relative space-y-8">
+        <CardContent className="pt-6">
+          <div className="relative space-y-12">
             {timelineEvents.map((event, index) => (
-              <div key={event.id} className="flex gap-4">
-                <div className="relative flex items-center justify-center">
-                  <div className="h-full w-px bg-border absolute top-0 left-1/2 transform -translate-x-1/2" 
-                       style={{ display: index === timelineEvents.length - 1 ? 'none' : 'block' }} />
-                  <div className="relative z-10 w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <event.icon className="w-4 h-4" />
+              <div key={event.id} className="flex gap-6">
+                {/* Timeline Connector */}
+                <div className="relative flex items-start">
+                  <div 
+                    className="h-full w-0.5 bg-gradient-to-b from-primary/50 to-primary/10 absolute top-8 left-1/2 transform -translate-x-1/2" 
+                    style={{ display: index === timelineEvents.length - 1 ? 'none' : 'block' }} 
+                  />
+                  <div className="relative z-10 w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary ring-4 ring-background shadow-sm">
+                    <event.icon className="w-6 h-6" />
                   </div>
                 </div>
+
+                {/* Content Card */}
                 <div className="flex-1 -mt-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-medium">{event.title}</h3>
-                    <Badge variant="secondary" className="text-xs">
-                      {event.category}
-                    </Badge>
+                  <div className="bg-card rounded-lg border p-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-start justify-between mb-2">
+                      <div>
+                        <h3 className="text-lg font-semibold tracking-tight">{event.title}</h3>
+                        <time className="text-sm text-muted-foreground">
+                          {new Date(event.date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
+                        </time>
+                      </div>
+                      <Badge 
+                        variant="secondary" 
+                        className={`
+                          ${event.category === 'academic' ? 'bg-blue-100 text-blue-800' : ''}
+                          ${event.category === 'health' ? 'bg-red-100 text-red-800' : ''}
+                          ${event.category === 'support' ? 'bg-purple-100 text-purple-800' : ''}
+                          ${event.category === 'achievement' ? 'bg-green-100 text-green-800' : ''}
+                        `}
+                      >
+                        {event.category}
+                      </Badge>
+                    </div>
+
+                    <p className="text-sm text-muted-foreground mt-2">{event.description}</p>
+
+                    {/* Attachments Section */}
+                    {event.attachments && (
+                      <div className="mt-4 pt-3 border-t">
+                        <div className="flex flex-wrap gap-2">
+                          {event.attachments.map((attachment) => (
+                            <Badge 
+                              key={attachment} 
+                              variant="outline" 
+                              className="text-xs px-3 py-1 bg-background hover:bg-accent cursor-pointer transition-colors"
+                            >
+                              <span className="mr-1">📎</span>
+                              {attachment}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Teacher Feedback Section */}
+                    {event.teacher && (
+                      <div className="mt-4 pt-3 border-t flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-primary/5 flex items-center justify-center">
+                          <Star className="w-4 h-4 text-yellow-500" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">{event.teacher}</p>
+                          <p className="text-xs text-muted-foreground">{event.subject}</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <time className="text-sm text-muted-foreground">
-                    {new Date(event.date).toLocaleDateString()}
-                  </time>
-                  <p className="text-sm mt-1">{event.description}</p>
-                  {event.attachments && (
-                    <div className="flex gap-2 mt-2">
-                      {event.attachments.map((attachment) => (
-                        <Badge key={attachment} variant="outline" className="text-xs">
-                          📎 {attachment}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
-                  {event.teacher && (
-                    <div className="flex items-center gap-1 mt-2 text-sm text-muted-foreground">
-                      <Star className="w-4 h-4" />
-                      <span>{event.teacher} - {event.subject}</span>
-                    </div>
-                  )}
                 </div>
               </div>
             ))}
