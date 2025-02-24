@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,9 +13,38 @@ import {
   BarChart3,
   Search,
   Filter,
+  Plus,
 } from "lucide-react";
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
 
-// Sample data
+const userActivityData = [
+  { month: "Jan", students: 65, schools: 4, events: 12 },
+  { month: "Feb", students: 78, schools: 5, events: 15 },
+  { month: "Mar", students: 90, schools: 6, events: 18 },
+];
+
+const activityDistribution = [
+  { name: "Sports", value: 35 },
+  { name: "Arts", value: 25 },
+  { name: "Academic", value: 20 },
+  { name: "Music", value: 20 },
+];
+
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+
 const pendingContent = [
   {
     id: 1,
@@ -25,6 +53,8 @@ const pendingContent = [
     author: "Green Valley International",
     status: "pending",
     date: "2024-03-10",
+    category: "Registration",
+    priority: "High",
   },
   {
     id: 2,
@@ -33,29 +63,66 @@ const pendingContent = [
     author: "State Education Board",
     status: "pending",
     date: "2024-03-12",
+    category: "Competition",
+    priority: "Medium",
   },
 ];
 
-const statistics = [
+const schoolsData = [
   {
-    title: "Total Students",
-    value: "1,234",
-    icon: Users,
+    id: 1,
+    name: "Green Valley International",
+    location: "City Center",
+    students: 450,
+    status: "active",
+    type: "International",
+    rating: 4.5,
+    lastUpdated: "2024-03-01",
   },
+];
+
+const activitiesData = [
   {
-    title: "Active Schools",
-    value: "45",
-    icon: School,
-  },
-  {
-    title: "Upcoming Events",
-    value: "23",
-    icon: Calendar,
+    id: 1,
+    name: "Chess Championship",
+    category: "Competition",
+    organizer: "State Board",
+    status: "upcoming",
+    participants: 120,
+    date: "2024-04-15",
+    venue: "Central Hall",
   },
 ];
 
 export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [filters, setFilters] = useState({
+    type: "all",
+    status: "all",
+    priority: "all",
+    dateRange: "all",
+  });
+  const [showFilters, setShowFilters] = useState(false);
+
+  const handleAdd = (type: "school" | "activity") => {
+    console.log(`Adding new ${type}`);
+  };
+
+  const handleEdit = (id: number, type: "school" | "activity") => {
+    console.log(`Editing ${type} with id: ${id}`);
+  };
+
+  const handleDelete = (id: number, type: "school" | "activity") => {
+    console.log(`Deleting ${type} with id: ${id}`);
+  };
+
+  const handleApprove = (id: number) => {
+    console.log(`Approving content with id: ${id}`);
+  };
+
+  const handleReject = (id: number) => {
+    console.log(`Rejecting content with id: ${id}`);
+  };
 
   return (
     <div className="space-y-6">
@@ -64,19 +131,36 @@ export default function Dashboard() {
         <Button>Download Report</Button>
       </div>
 
-      {/* Statistics Cards */}
       <div className="grid gap-4 md:grid-cols-3">
-        {statistics.map((stat, index) => (
-          <Card key={index}>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-              <stat.icon className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-            </CardContent>
-          </Card>
-        ))}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Total Students</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">1,234</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Active Schools</CardTitle>
+            <School className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">45</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Upcoming Events</CardTitle>
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">23</div>
+          </CardContent>
+        </Card>
       </div>
 
       <Tabs defaultValue="approval" className="space-y-6">
@@ -87,21 +171,91 @@ export default function Dashboard() {
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
         </TabsList>
 
-        {/* Search and Filter Bar */}
-        <div className="flex gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
+        <div className="space-y-4">
+          <div className="flex gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Button
+              variant="outline"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <Filter className="mr-2 h-4 w-4" />
+              Filters
+            </Button>
           </div>
-          <Button variant="outline">
-            <Filter className="mr-2 h-4 w-4" />
-            Filters
-          </Button>
+
+          {showFilters && (
+            <Card className="p-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Type</label>
+                  <select
+                    className="w-full mt-1 rounded-md border border-input bg-background px-3 py-2"
+                    value={filters.type}
+                    onChange={(e) =>
+                      setFilters({ ...filters, type: e.target.value })
+                    }
+                  >
+                    <option value="all">All Types</option>
+                    <option value="school">School</option>
+                    <option value="event">Event</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Status</label>
+                  <select
+                    className="w-full mt-1 rounded-md border border-input bg-background px-3 py-2"
+                    value={filters.status}
+                    onChange={(e) =>
+                      setFilters({ ...filters, status: e.target.value })
+                    }
+                  >
+                    <option value="all">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="pending">Pending</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Priority</label>
+                  <select
+                    className="w-full mt-1 rounded-md border border-input bg-background px-3 py-2"
+                    value={filters.priority}
+                    onChange={(e) =>
+                      setFilters({ ...filters, priority: e.target.value })
+                    }
+                  >
+                    <option value="all">All Priorities</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Date Range</label>
+                  <select
+                    className="w-full mt-1 rounded-md border border-input bg-background px-3 py-2"
+                    value={filters.dateRange}
+                    onChange={(e) =>
+                      setFilters({ ...filters, dateRange: e.target.value })
+                    }
+                  >
+                    <option value="all">All Time</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                  </select>
+                </div>
+              </div>
+            </Card>
+          )}
         </div>
 
         <TabsContent value="approval" className="space-y-4">
@@ -133,28 +287,48 @@ export default function Dashboard() {
 
         <TabsContent value="schools" className="space-y-4">
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>School Management</CardTitle>
+              <Button onClick={() => handleAdd("school")}>
+                <Plus className="mr-2 h-4 w-4" />
+                Add School
+              </Button>
             </CardHeader>
             <CardContent>
               <div className="rounded-md border">
-                <div className="grid grid-cols-5 gap-4 p-4 font-medium">
+                <div className="grid grid-cols-6 gap-4 p-4 font-medium">
                   <div>School Name</div>
                   <div>Location</div>
                   <div>Students</div>
+                  <div>Rating</div>
                   <div>Status</div>
                   <div>Actions</div>
                 </div>
-                {/* Sample school row */}
-                <div className="grid grid-cols-5 gap-4 p-4 border-t items-center">
-                  <div>Green Valley International</div>
-                  <div className="text-muted-foreground">City Center</div>
-                  <div>450</div>
-                  <div><Badge>Active</Badge></div>
-                  <div>
-                    <Button variant="ghost" size="sm">Edit</Button>
+                {schoolsData.map((school) => (
+                  <div key={school.id} className="grid grid-cols-6 gap-4 p-4 border-t items-center">
+                    <div>{school.name}</div>
+                    <div className="text-muted-foreground">{school.location}</div>
+                    <div>{school.students}</div>
+                    <div>{school.rating}/5</div>
+                    <div><Badge>{school.status}</Badge></div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEdit(school.id, "school")}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDelete(school.id, "school")}
+                      >
+                        Delete
+                      </Button>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -162,47 +336,128 @@ export default function Dashboard() {
 
         <TabsContent value="activities" className="space-y-4">
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Activity Management</CardTitle>
+              <Button onClick={() => handleAdd("activity")}>
+                <Plus className="mr-2 h-4 w-4" />
+                Add Activity
+              </Button>
             </CardHeader>
             <CardContent>
               <div className="rounded-md border">
-                <div className="grid grid-cols-5 gap-4 p-4 font-medium">
+                <div className="grid grid-cols-6 gap-4 p-4 font-medium">
                   <div>Activity Name</div>
                   <div>Category</div>
                   <div>Organizer</div>
+                  <div>Participants</div>
                   <div>Status</div>
                   <div>Actions</div>
                 </div>
-                {/* Sample activity row */}
-                <div className="grid grid-cols-5 gap-4 p-4 border-t items-center">
-                  <div>Chess Championship</div>
-                  <div className="text-muted-foreground">Competition</div>
-                  <div>State Board</div>
-                  <div><Badge variant="outline">Upcoming</Badge></div>
-                  <div>
-                    <Button variant="ghost" size="sm">Edit</Button>
+                {activitiesData.map((activity) => (
+                  <div key={activity.id} className="grid grid-cols-6 gap-4 p-4 border-t items-center">
+                    <div>{activity.name}</div>
+                    <div className="text-muted-foreground">{activity.category}</div>
+                    <div>{activity.organizer}</div>
+                    <div>{activity.participants}</div>
+                    <div><Badge variant="outline">{activity.status}</Badge></div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEdit(activity.id, "activity")}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDelete(activity.id, "activity")}
+                      >
+                        Delete
+                      </Button>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="analytics" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Platform Analytics</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[300px] flex items-center justify-center border rounded-lg">
-                <div className="flex flex-col items-center text-muted-foreground">
-                  <BarChart3 className="h-8 w-8 mb-2" />
-                  <p>Analytics visualization will be implemented here</p>
+          <div className="grid gap-4 md:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>User Growth Trends</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={userActivityData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis />
+                      <Tooltip />
+                      <Line type="monotone" dataKey="students" stroke="#8884d8" />
+                      <Line type="monotone" dataKey="schools" stroke="#82ca9d" />
+                    </LineChart>
+                  </ResponsiveContainer>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Monthly Events Distribution</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={userActivityData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="events" fill="#8884d8" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Activity Type Distribution</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={activityDistribution}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, percent }) =>
+                          `${name} (${(percent * 100).toFixed(0)}%)`
+                        }
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {activityDistribution.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
