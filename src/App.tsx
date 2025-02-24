@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AppLayout from "./components/layout/AppLayout";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
+import Admin from "./pages/Admin";
 import Messages from "./pages/Messages";
 import Calendar from "./pages/Calendar";
 import Profile from "./pages/Profile";
@@ -24,6 +25,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/admin" element={<Admin />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/messages" element={<Messages />} />
             <Route path="/calendar" element={<Calendar />} />
