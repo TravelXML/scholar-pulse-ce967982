@@ -201,7 +201,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 For support or inquiries, please contact:
 
 - **Email:** astartupcto@gmail.com
-- **GitHub:** [scholar-plus](https://github.com/TravelXML/scholar-plus)
+- **GitHub:** [scholar-plus](https://github.com/TravelXML/scholar-pulse-ce967982)
 
 
 ---
