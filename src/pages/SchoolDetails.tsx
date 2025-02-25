@@ -674,4 +674,5 @@ export default function SchoolDetails() {
                   </p>
                   <a 
                     href={`https://${schoolDetails.socialMedia.youtube}`}
-                    target
+                    target="_blank"
+                
