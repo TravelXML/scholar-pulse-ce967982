@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { 
   Card, 
@@ -292,73 +291,73 @@ export default function Home() {
               School Albums
             </CardTitle>
             <CardDescription>Recent photos and events</CardDescription>
+          </CardHeader>
+          <CardContent>
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full max-w-md grid-cols-2">
                 <TabsTrigger value="all">All Photos</TabsTrigger>
                 <TabsTrigger value="child">My Child</TabsTrigger>
               </TabsList>
-            </Tabs>
-          </CardHeader>
-          <CardContent>
-            <TabsContent value="all" className="mt-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                {recentAlbums.map((album) => (
-                  <div key={album.id} className="group cursor-pointer" onClick={() => navigate("/dashboard")}>
-                    <div className="relative aspect-video rounded-md overflow-hidden mb-2">
-                      <img 
-                        src={album.coverImage} 
-                        alt={album.title}
-                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
-                        <Badge className="bg-white/80 text-black">{album.photoCount} Photos</Badge>
+              <TabsContent value="all" className="mt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                  {recentAlbums.map((album) => (
+                    <div key={album.id} className="group cursor-pointer" onClick={() => navigate("/dashboard")}>
+                      <div className="relative aspect-video rounded-md overflow-hidden mb-2">
+                        <img 
+                          src={album.coverImage} 
+                          alt={album.title}
+                          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
+                          <Badge className="bg-white/80 text-black">{album.photoCount} Photos</Badge>
+                        </div>
                       </div>
+                      <h4 className="font-medium text-sm">{album.title}</h4>
+                      <p className="text-xs text-muted-foreground">{album.date}</p>
                     </div>
-                    <h4 className="font-medium text-sm">{album.title}</h4>
-                    <p className="text-xs text-muted-foreground">{album.date}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="flex justify-center mt-4">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={() => navigate("/dashboard")}
-                  style={{ color: "#0B6623", borderColor: "#0B6623" }}
-                >
-                  View All Albums
-                  <ChevronRight className="h-4 w-4 ml-1" />
-                </Button>
-              </div>
-            </TabsContent>
-            <TabsContent value="child" className="mt-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {childPhotos.map((photo) => (
-                  <div key={photo.id} className="group cursor-pointer" onClick={() => navigate("/dashboard")}>
-                    <div className="relative aspect-video rounded-md overflow-hidden mb-2">
-                      <img 
-                        src={photo.image} 
-                        alt={photo.title}
-                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                      />
+                  ))}
+                </div>
+                <div className="flex justify-center mt-4">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => navigate("/dashboard")}
+                    style={{ color: "#0B6623", borderColor: "#0B6623" }}
+                  >
+                    View All Albums
+                    <ChevronRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </div>
+              </TabsContent>
+              <TabsContent value="child" className="mt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {childPhotos.map((photo) => (
+                    <div key={photo.id} className="group cursor-pointer" onClick={() => navigate("/dashboard")}>
+                      <div className="relative aspect-video rounded-md overflow-hidden mb-2">
+                        <img 
+                          src={photo.image} 
+                          alt={photo.title}
+                          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      <h4 className="font-medium text-sm">{photo.title}</h4>
+                      <p className="text-xs text-muted-foreground">{photo.date}</p>
                     </div>
-                    <h4 className="font-medium text-sm">{photo.title}</h4>
-                    <p className="text-xs text-muted-foreground">{photo.date}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="flex justify-center mt-4">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={() => navigate("/dashboard")}
-                  style={{ color: "#0B6623", borderColor: "#0B6623" }}
-                >
-                  View All Photos
-                  <ChevronRight className="h-4 w-4 ml-1" />
-                </Button>
-              </div>
-            </TabsContent>
+                  ))}
+                </div>
+                <div className="flex justify-center mt-4">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => navigate("/dashboard")}
+                    style={{ color: "#0B6623", borderColor: "#0B6623" }}
+                  >
+                    View All Photos
+                    <ChevronRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </div>
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
 
