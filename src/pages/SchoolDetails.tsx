@@ -673,6 +673,4 @@ export default function SchoolDetails() {
                     Take a virtual tour of our campus and facilities.
                   </p>
                   <a 
-                    href={`https://${schoolDetails.socialMedia.youtube}`}
-                    target="_blank"
-                    
+                    href={`https://${schoolDetails.socialMedia.youtube
