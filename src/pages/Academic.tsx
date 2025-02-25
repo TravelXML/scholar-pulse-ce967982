@@ -359,4 +359,233 @@ export default function Academic() {
                       ))}
                   </LineChart>
                 </ResponsiveContainer>
-              </div
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Assignments Tab */}
+        <TabsContent value="assignments" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle style={{ color: "#0B6623" }}>Assignments</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ScrollArea className="h-[500px] pr-4">
+                <div className="space-y-4">
+                  {assignments.map((assignment) => (
+                    <div
+                      key={assignment.id}
+                      className={`p-4 rounded-lg border ${
+                        assignment.status === "completed"
+                          ? "border-green-200 bg-green-50"
+                          : assignment.status === "overdue"
+                          ? "border-red-200 bg-red-50"
+                          : "border-yellow-200 bg-yellow-50"
+                      }`}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-semibold">{assignment.title}</h3>
+                            <Badge
+                              variant={
+                                assignment.status === "completed"
+                                  ? "default"
+                                  : assignment.status === "overdue"
+                                  ? "destructive"
+                                  : "outline"
+                              }
+                            >
+                              {assignment.status.charAt(0).toUpperCase() + assignment.status.slice(1)}
+                            </Badge>
+                          </div>
+                          <p className="text-sm mt-1">Subject: {assignment.subject}</p>
+                          <p className="text-sm text-muted-foreground">
+                            Due: {new Date(assignment.dueDate).toLocaleDateString()}
+                          </p>
+                          {assignment.status === "completed" && assignment.grade && (
+                            <div className="mt-2">
+                              <p className="text-sm font-medium">Grade: {assignment.grade}</p>
+                              {assignment.teacherComment && (
+                                <p className="text-sm mt-1 italic">
+                                  "{assignment.teacherComment}"
+                                </p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex items-center">
+                          {assignment.status === "completed" ? (
+                            <CheckCircle
+                              className="h-5 w-5 text-green-500"
+                            />
+                          ) : assignment.status === "overdue" ? (
+                            <AlertCircle
+                              className="h-5 w-5 text-red-500"
+                            />
+                          ) : (
+                            <Clock
+                              className="h-5 w-5 text-yellow-500"
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Exams Tab */}
+        <TabsContent value="exams" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle style={{ color: "#0B6623" }}>Upcoming Exams</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="h-[400px] pr-4">
+                  <div className="space-y-4">
+                    {upcomingExams.map((exam) => (
+                      <div
+                        key={exam.id}
+                        className="p-4 rounded-lg border border-blue-200 bg-blue-50"
+                      >
+                        <h3 className="font-semibold">{exam.title}</h3>
+                        <p className="text-sm mt-1">Subject: {exam.subject}</p>
+                        <div className="grid grid-cols-2 gap-2 mt-2">
+                          <div>
+                            <p className="text-xs text-muted-foreground">Date</p>
+                            <p className="text-sm">
+                              {new Date(exam.date).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground">Time</p>
+                            <p className="text-sm">{exam.time}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground">Venue</p>
+                            <p className="text-sm">{exam.venue}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {upcomingExams.length === 0 && (
+                      <p className="text-center py-8 text-muted-foreground">
+                        No upcoming exams
+                      </p>
+                    )}
+                  </div>
+                </ScrollArea>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle style={{ color: "#0B6623" }}>Completed Exams</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="h-[400px] pr-4">
+                  <div className="space-y-4">
+                    {completedExams.map((exam) => (
+                      <div
+                        key={exam.id}
+                        className="p-4 rounded-lg border border-green-200 bg-green-50"
+                      >
+                        <div className="flex justify-between">
+                          <h3 className="font-semibold">{exam.title}</h3>
+                          {exam.grade && (
+                            <Badge variant="outline">Grade: {exam.grade}</Badge>
+                          )}
+                        </div>
+                        <p className="text-sm mt-1">Subject: {exam.subject}</p>
+                        <div className="grid grid-cols-2 gap-2 mt-2">
+                          <div>
+                            <p className="text-xs text-muted-foreground">Date</p>
+                            <p className="text-sm">
+                              {new Date(exam.date).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground">Time</p>
+                            <p className="text-sm">{exam.time}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground">Venue</p>
+                            <p className="text-sm">{exam.venue}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {completedExams.length === 0 && (
+                      <p className="text-center py-8 text-muted-foreground">
+                        No completed exams
+                      </p>
+                    )}
+                  </div>
+                </ScrollArea>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* Attendance Tab */}
+        <TabsContent value="attendance" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle style={{ color: "#0B6623" }}>Monthly Attendance</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[350px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={attendanceData} margin={{ left: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="present" name="Present" fill="#0B6623" />
+                    <Bar dataKey="absent" name="Absent" fill="#ef4444" />
+                    <Bar dataKey="leave" name="Leave" fill="#f59e0b" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle style={{ color: "#0B6623" }}>Attendance Summary</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-4 rounded-lg bg-green-50 border border-green-200">
+                  <h3 className="font-medium text-sm text-green-800">Present Days</h3>
+                  <p className="text-2xl font-bold text-green-600">
+                    {attendanceData.reduce((sum, month) => sum + month.present, 0)}
+                  </p>
+                </div>
+                <div className="p-4 rounded-lg bg-red-50 border border-red-200">
+                  <h3 className="font-medium text-sm text-red-800">Absent Days</h3>
+                  <p className="text-2xl font-bold text-red-600">
+                    {attendanceData.reduce((sum, month) => sum + month.absent, 0)}
+                  </p>
+                </div>
+                <div className="p-4 rounded-lg bg-amber-50 border border-amber-200">
+                  <h3 className="font-medium text-sm text-amber-800">Leave Days</h3>
+                  <p className="text-2xl font-bold text-amber-600">
+                    {attendanceData.reduce((sum, month) => sum + month.leave, 0)}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
