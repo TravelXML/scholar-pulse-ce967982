@@ -15,8 +15,19 @@ import {
   Star,
   FileText,
   Image as ImageIcon,
+  Filter,
 } from "lucide-react";
 import QRCode from "react-qr-code";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 
 interface EmergencyContact {
   name: string;
@@ -42,14 +53,26 @@ interface TimelineEvent {
   starred?: boolean;
 }
 
+const performanceData = [
+  { month: "Jan", academic: 85, mental: 90, physical: 88 },
+  { month: "Feb", academic: 82, mental: 85, physical: 90 },
+  { month: "Mar", academic: 88, mental: 88, physical: 85 },
+  { month: "Apr", academic: 90, mental: 92, physical: 89 },
+  { month: "May", academic: 85, mental: 86, physical: 87 },
+  { month: "Jun", academic: 89, mental: 90, physical: 91 },
+];
+
 export default function Profile() {
   const [studentData] = useState({
     name: "John Doe",
     age: "15",
+    grade: "10th Standard",
+    section: "A",
     bloodGroup: "O+",
     birthDate: "2009-05-15",
     aadharNumber: "XXXX-XXXX-XXXX",
-    profilePicture: "/placeholder.svg",
+    profilePicture: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop",
+    academicYear: "2023-24",
     parents: {
       father: "James Doe",
       mother: "Jane Doe"
@@ -65,6 +88,17 @@ export default function Profile() {
     physicalDetails: "",
     studentId: "STU2024001"
   });
+
+  const [timelineFilter, setTimelineFilter] = useState("all");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      console.log("New profile picture selected:", file);
+    }
+  };
 
   const [timelineEvents] = useState<TimelineEvent[]>([
     {
@@ -168,10 +202,20 @@ export default function Profile() {
     }
   };
 
+  const filteredEvents = timelineEvents.filter(event => {
+    if (timelineFilter === "all") return true;
+    return event.type === timelineFilter;
+  });
+
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-semibold">Student Profile</h1>
+        <div>
+          <h1 className="text-3xl font-semibold">Student Profile</h1>
+          <p className="text-muted-foreground">
+            {studentData.grade} • {studentData.section} • Academic Year {studentData.academicYear}
+          </p>
+        </div>
         <Button>
           <Upload className="mr-2" /> Save Changes
         </Button>
@@ -190,21 +234,70 @@ export default function Profile() {
                   alt="Profile"
                   className="w-32 h-32 rounded-full object-cover border-4 border-primary/10"
                 />
-                <Button
-                  size="icon"
-                  className="absolute bottom-0 right-0 rounded-full"
-                  variant="secondary"
-                >
-                  <Camera className="h-4 w-4" />
-                </Button>
+                <label htmlFor="profile-upload">
+                  <Button
+                    size="icon"
+                    className="absolute bottom-0 right-0 rounded-full cursor-pointer"
+                    variant="secondary"
+                    onClick={() => document.getElementById('profile-upload')?.click()}
+                  >
+                    <Camera className="h-4 w-4" />
+                  </Button>
+                </label>
+                <Input
+                  id="profile-upload"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageChange}
+                />
               </div>
               <div className="text-center">
                 <h2 className="text-2xl font-semibold">{studentData.name}</h2>
-                <p className="text-sm text-muted-foreground">Student ID: {studentData.studentId}</p>
+                <p className="text-sm text-muted-foreground">
+                  Student ID: {studentData.studentId}
+                </p>
               </div>
             </div>
             <div className="flex justify-center p-4 bg-white rounded-lg">
               <QRCode value={studentData.studentId} size={150} />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Student Progress Overview</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={performanceData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line 
+                    type="monotone" 
+                    dataKey="academic" 
+                    stroke="#8884d8" 
+                    name="Academic Performance"
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="mental" 
+                    stroke="#82ca9d" 
+                    name="Mental Health"
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="physical" 
+                    stroke="#ffc658" 
+                    name="Physical Health"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
           </CardContent>
         </Card>
@@ -223,6 +316,14 @@ export default function Profile() {
                 <label className="text-sm font-medium">Blood Group</label>
                 <Input value={studentData.bloodGroup} readOnly />
               </div>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Grade</label>
+              <Input value={studentData.grade} readOnly />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Section</label>
+              <Input value={studentData.section} readOnly />
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">Birth Date</label>
@@ -306,14 +407,29 @@ export default function Profile() {
         </Card>
 
         <Card className="md:col-span-2">
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Student Timeline</CardTitle>
+            <div className="flex items-center gap-2">
+              <Filter className="h-4 w-4" />
+              <select
+                className="border rounded p-1"
+                value={timelineFilter}
+                onChange={(e) => setTimelineFilter(e.target.value)}
+              >
+                <option value="all">All Events</option>
+                <option value="academic">Academic</option>
+                <option value="medical">Medical</option>
+                <option value="counseling">Counseling</option>
+                <option value="award">Awards</option>
+                <option value="flag">Teacher Flags</option>
+              </select>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="relative space-y-8">
               <div className="absolute left-9 top-0 bottom-0 w-px bg-border" />
 
-              {timelineEvents.map((event) => (
+              {filteredEvents.map((event) => (
                 <div key={event.id} className="relative flex gap-6">
                   <div className="relative">
                     <div className={`
