@@ -1,7 +1,50 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, School, Calendar, ArrowRight } from "lucide-react";
+import { 
+  Users, 
+  School, 
+  Calendar, 
+  ArrowRight, 
+  Star, 
+  ShoppingBag,
+  Heart 
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+
+interface SchoolCard {
+  id: string;
+  name: string;
+  image: string;
+  rating: number;
+  totalRatings: number;
+  preferredFor: string[];
+  description: string;
+}
+
+interface ActivityCard {
+  id: string;
+  name: string;
+  image: string;
+  rating: number;
+  totalRatings: number;
+  preferredFor: string[];
+  description: string;
+}
+
+interface SchoolItem {
+  id: string;
+  name: string;
+  image: string;
+  category: string;
+  price: number;
+  colors: string[];
+  sizes?: string[];
+  sku: string;
+  description: string;
+}
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -24,10 +67,128 @@ export default function Dashboard() {
     },
   ];
 
+  const schools: SchoolCard[] = [
+    {
+      id: "1",
+      name: "Sunshine Kids Academy",
+      image: "https://images.unsplash.com/photo-1501286727345-7e5d1b4f49cc?w=800&h=600",
+      rating: 4.8,
+      totalRatings: 256,
+      preferredFor: ["Early Learning", "Creative Arts", "Special Needs"],
+      description: "A nurturing environment for early childhood development with focus on creative learning."
+    },
+    {
+      id: "2",
+      name: "Global Montessori",
+      image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&h=600",
+      rating: 4.9,
+      totalRatings: 189,
+      preferredFor: ["Montessori Method", "International Curriculum", "Language Skills"],
+      description: "International standard Montessori education with multilingual programs."
+    },
+    {
+      id: "3",
+      name: "Tech Tots Preschool",
+      image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600",
+      rating: 4.7,
+      totalRatings: 167,
+      preferredFor: ["STEAM Programs", "Digital Learning", "Physical Activities"],
+      description: "Modern preschool focusing on technology and hands-on learning."
+    },
+    {
+      id: "4",
+      name: "Nature's Nursery",
+      image: "https://images.unsplash.com/photo-1444723121867-7a241cacace9?w=800&h=600",
+      rating: 4.6,
+      totalRatings: 145,
+      preferredFor: ["Environmental Education", "Outdoor Activities", "Sustainability"],
+      description: "Eco-friendly school with focus on nature-based learning."
+    },
+    // ... Add 4 more schools with similar structure
+  ];
+
+  const activities: ActivityCard[] = [
+    {
+      id: "1",
+      name: "Little Scientists Club",
+      image: "https://images.unsplash.com/photo-1554757388-29a2a86ef02f?w=800&h=600",
+      rating: 4.9,
+      totalRatings: 178,
+      preferredFor: ["STEM Interest", "Ages 5-8", "Curious Minds"],
+      description: "Hands-on science experiments and discoveries for young minds."
+    },
+    {
+      id: "2",
+      name: "Music & Movement",
+      image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&h=600",
+      rating: 4.7,
+      totalRatings: 156,
+      preferredFor: ["Musical Development", "Motor Skills", "All Ages"],
+      description: "Interactive music and dance sessions for holistic development."
+    },
+    {
+      id: "3",
+      name: "Art Adventure",
+      image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&h=600",
+      rating: 4.8,
+      totalRatings: 134,
+      preferredFor: ["Creative Expression", "Fine Motor Skills", "Ages 3-12"],
+      description: "Exploring creativity through various art mediums and techniques."
+    },
+    {
+      id: "4",
+      name: "Sports Stars",
+      image: "https://images.unsplash.com/photo-1526676037777-05a232554f77?w=800&h=600",
+      rating: 4.6,
+      totalRatings: 189,
+      preferredFor: ["Physical Development", "Team Building", "Ages 4-12"],
+      description: "Multi-sports program focusing on fitness and teamwork."
+    },
+    // ... Add 4 more activities with similar structure
+  ];
+
+  const schoolItems: SchoolItem[] = [
+    {
+      id: "1",
+      name: "Classic School Uniform Set",
+      image: "https://images.unsplash.com/photo-1621570171347-c6276be7b47d?w=800&h=600",
+      category: "Uniforms",
+      price: 45.99,
+      colors: ["Navy", "White", "Grey"],
+      sizes: ["4-5Y", "6-7Y", "8-9Y", "10-11Y"],
+      sku: "UNF-001",
+      description: "Complete set including shirt, pants/skirt, and tie"
+    },
+    {
+      id: "2",
+      name: "Premium School Bag",
+      image: "https://images.unsplash.com/photo-1577401239170-897942555fb3?w=800&h=600",
+      category: "Accessories",
+      price: 29.99,
+      colors: ["Blue", "Black", "Red"],
+      sku: "BAG-001",
+      description: "Ergonomic design with multiple compartments"
+    },
+    {
+      id: "3",
+      name: "Mathematical Learning Kit",
+      image: "https://images.unsplash.com/photo-1594912772762-8435b9e0e506?w=800&h=600",
+      category: "Educational Toys",
+      price: 34.99,
+      colors: ["Multicolor"],
+      sku: "EDU-001",
+      description: "Complete set of mathematical learning tools"
+    },
+    // ... Add 7 more items with similar structure
+  ];
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-semibold">Dashboard</h1>
+        <div>
+          <h1 className="text-3xl font-bold text-primary">Welcome to Scholar Plus</h1>
+          <p className="text-muted-foreground">Your complete educational companion</p>
+        </div>
         <Button onClick={() => navigate("/admin")}>
           Admin Panel
           <ArrowRight className="ml-2 h-4 w-4" />
@@ -48,51 +209,130 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Activities</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Quick overview of recent platform activities
-            </p>
-            {/* Add recent activities list here */}
-          </CardContent>
-        </Card>
+      <Tabs defaultValue="schools" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="schools">Schools</TabsTrigger>
+          <TabsTrigger value="activities">Activities</TabsTrigger>
+          <TabsTrigger value="supplies">School Supplies</TabsTrigger>
+        </TabsList>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <Button
-              variant="outline"
-              className="w-full justify-start"
-              onClick={() => navigate("/admin")}
-            >
-              <Users className="mr-2 h-4 w-4" />
-              Manage Users
-            </Button>
-            <Button
-              variant="outline"
-              className="w-full justify-start"
-              onClick={() => navigate("/admin")}
-            >
-              <School className="mr-2 h-4 w-4" />
-              Manage Schools
-            </Button>
-            <Button
-              variant="outline"
-              className="w-full justify-start"
-              onClick={() => navigate("/admin")}
-            >
-              <Calendar className="mr-2 h-4 w-4" />
-              Manage Activities
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+        <TabsContent value="schools" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {schools.map((school) => (
+              <Card key={school.id} className="overflow-hidden">
+                <div className="aspect-video relative">
+                  <img 
+                    src={school.image} 
+                    alt={school.name}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <CardHeader>
+                  <CardTitle className="text-lg">{school.name}</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    <span className="font-medium">{school.rating}</span>
+                    <span className="text-muted-foreground">({school.totalRatings})</span>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <p className="text-sm text-muted-foreground">{school.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {school.preferredFor.map((pref, idx) => (
+                      <Badge key={idx} variant="secondary">{pref}</Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="activities" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {activities.map((activity) => (
+              <Card key={activity.id} className="overflow-hidden">
+                <div className="aspect-video relative">
+                  <img 
+                    src={activity.image} 
+                    alt={activity.name}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <CardHeader>
+                  <CardTitle className="text-lg">{activity.name}</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    <span className="font-medium">{activity.rating}</span>
+                    <span className="text-muted-foreground">({activity.totalRatings})</span>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <p className="text-sm text-muted-foreground">{activity.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {activity.preferredFor.map((pref, idx) => (
+                      <Badge key={idx} variant="secondary">{pref}</Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="supplies" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {schoolItems.map((item) => (
+              <Card key={item.id} className="overflow-hidden">
+                <div className="aspect-video relative">
+                  <img 
+                    src={item.image} 
+                    alt={item.name}
+                    className="object-cover w-full h-full"
+                  />
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    className="absolute top-2 right-2"
+                  >
+                    <Heart className="h-4 w-4" />
+                  </Button>
+                </div>
+                <CardHeader>
+                  <CardTitle className="text-lg">{item.name}</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-lg">${item.price}</span>
+                    <Badge variant="outline">SKU: {item.sku}</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <p className="text-sm text-muted-foreground">{item.description}</p>
+                  {item.colors && (
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium">Available Colors:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {item.colors.map((color) => (
+                          <Badge key={color} variant="outline">{color}</Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {item.sizes && (
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium">Available Sizes:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {item.sizes.map((size) => (
+                          <Badge key={size} variant="outline">{size}</Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
