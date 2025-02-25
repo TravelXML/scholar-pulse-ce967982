@@ -1,203 +1,407 @@
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Calendar } from "@/components/ui/calendar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, MapPin, Star, BookOpen, Activity, Bell } from "lucide-react";
-
-// Sample data
-const schools = [
-  {
-    id: 1,
-    name: "Green Valley International School",
-    location: "123 Education Lane, City",
-    rating: 4.5,
-    ageGroups: "5-15 years",
-    classes: "KG to Grade 10",
-    admissionCriteria: "Entrance test and interview required",
-    imageUrl: "/placeholder.svg"
-  },
-  {
-    id: 2,
-    name: "Summit Heights Academy",
-    location: "456 Learning Road, City",
-    rating: 4.8,
-    ageGroups: "3-18 years",
-    classes: "Pre-KG to Grade 12",
-    admissionCriteria: "Assessment and parent interview",
-    imageUrl: "/placeholder.svg"
-  }
-];
-
-const activities = [
-  {
-    id: 1,
-    name: "Advanced Dance Workshop",
-    category: "Dance",
-    organizer: "City Dance Academy",
-    type: "Class",
-    schedule: "Mon, Wed, Fri",
-    ageGroup: "8-15 years",
-    location: "Dance Studio Complex",
-    imageUrl: "/placeholder.svg"
-  },
-  {
-    id: 2,
-    name: "Inter-School Chess Championship",
-    category: "Competition",
-    organizer: "State Education Board",
-    type: "Tournament",
-    date: "2024-03-15",
-    ageGroup: "10-18 years",
-    location: "Central Sports Complex",
-    imageUrl: "/placeholder.svg"
-  }
-];
+import { 
+  BarChart, 
+  BookOpen, 
+  Calendar as CalendarIcon, 
+  MessageSquare, 
+  Bell, 
+  ShoppingCart, 
+  User, 
+  Video, 
+  ChevronRight 
+} from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+import { useToast } from "@/hooks/use-toast";
+import { Progress } from "@/components/ui/progress";
+import { 
+  BarChart as RechartsBarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  Legend, 
+  ResponsiveContainer 
+} from "recharts";
 
 export default function Home() {
-  const [activeFilter, setActiveFilter] = useState({
-    ageGroup: "",
-    searchQuery: "",
-  });
+  const { toast } = useToast();
+  const [leaveDate, setLeaveDate] = useState<Date | undefined>(new Date());
+  const [leaveEndDate, setLeaveEndDate] = useState<Date | undefined>(new Date());
+  const [leaveMessage, setLeaveMessage] = useState("");
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      teacher: "Mrs. Johnson",
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400",
+      message: "Your child has been performing exceptionally well in science class this week.",
+      time: "2 hours ago",
+      unread: true
+    },
+    {
+      id: 2,
+      teacher: "Mr. Davis",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400",
+      message: "Please submit the permission slip for the upcoming museum trip by Friday.",
+      time: "Yesterday",
+      unread: false
+    },
+    {
+      id: 3,
+      teacher: "Principal Williams",
+      avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400",
+      message: "School will be closing early on Friday due to teacher training.",
+      time: "3 days ago",
+      unread: false
+    }
+  ]);
+
+  const performanceData = [
+    { subject: "Math", score: 87, average: 72, best: 95 },
+    { subject: "Science", score: 92, average: 75, best: 98 },
+    { subject: "English", score: 78, average: 70, best: 90 },
+    { subject: "History", score: 85, average: 68, best: 88 },
+    { subject: "Art", score: 95, average: 82, best: 97 }
+  ];
+
+  const purchases = [
+    { id: 1, item: "Science Textbook", date: "15 Apr 2023", price: "$45.99" },
+    { id: 2, item: "Annual School Trip", date: "02 Mar 2023", price: "$120.00" },
+    { id: 3, item: "Art Supplies Kit", date: "18 Feb 2023", price: "$32.50" }
+  ];
+
+  const upcomingHolidays = [
+    { date: "May 25", name: "Summer Break Begins" },
+    { date: "Jun 19", name: "Founder's Day" },
+    { date: "Jul 4", name: "Independence Day" }
+  ];
+
+  const schoolDetails = {
+    name: "Springfield Elementary School",
+    board: "CBSE",
+    address: "123 Education Lane, Springfield",
+    phone: "(555) 123-4567",
+    website: "www.springfieldelementary.edu",
+    principalName: "Dr. Eleanor Thompson"
+  };
+
+  const handleSubmitLeave = () => {
+    if (!leaveDate || !leaveEndDate || !leaveMessage) {
+      toast({
+        title: "Missing information",
+        description: "Please fill all the required fields",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    toast({
+      title: "Leave request submitted",
+      description: "Your leave request has been sent to your teacher for approval.",
+    });
+
+    // Add a notification to simulate the approval process
+    setTimeout(() => {
+      setNotifications(prev => [
+        {
+          id: Date.now(),
+          teacher: "Principal Williams",
+          avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400",
+          message: "Your leave request has been approved.",
+          time: "Just now",
+          unread: true
+        },
+        ...prev
+      ]);
+
+      toast({
+        title: "Leave approved",
+        description: "Your leave request has been approved by Principal Williams.",
+      });
+    }, 5000);
+  };
+
+  const markAsRead = (id: number) => {
+    setNotifications(prev => 
+      prev.map(notification => 
+        notification.id === id ? {...notification, unread: false} : notification
+      )
+    );
+  };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-semibold">Welcome to EduConnect</h1>
-        <Button variant="outline">
-          <Bell className="mr-2 h-4 w-4" />
-          Notifications
-        </Button>
+        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm">
+            <Bell className="h-4 w-4 mr-2" />
+            {notifications.filter(n => n.unread).length > 0 && (
+              <Badge className="ml-1 bg-red-500 text-white">{notifications.filter(n => n.unread).length}</Badge>
+            )}
+          </Button>
+          <Avatar>
+            <AvatarImage src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&h=400" />
+            <AvatarFallback>JD</AvatarFallback>
+          </Avatar>
+        </div>
       </div>
 
-      <Tabs defaultValue="schools" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 lg:w-[400px]">
-          <TabsTrigger value="schools">
-            <BookOpen className="mr-2 h-4 w-4" />
-            Schools
-          </TabsTrigger>
-          <TabsTrigger value="activities">
-            <Activity className="mr-2 h-4 w-4" />
-            Activities
-          </TabsTrigger>
-        </TabsList>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* School Info Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <BookOpen className="h-5 w-5 mr-2" />
+              My School
+            </CardTitle>
+            <CardDescription>Information about your school</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex justify-between">
+                <h3 className="font-semibold">{schoolDetails.name}</h3>
+                <Badge>{schoolDetails.board}</Badge>
+              </div>
+              <div className="text-sm text-muted-foreground space-y-2">
+                <p><span className="font-medium">Address:</span> {schoolDetails.address}</p>
+                <p><span className="font-medium">Phone:</span> {schoolDetails.phone}</p>
+                <p><span className="font-medium">Website:</span> {schoolDetails.website}</p>
+                <p><span className="font-medium">Principal:</span> {schoolDetails.principalName}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-        {/* Search and Filter Section */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Search..."
-              className="pl-10"
-              value={activeFilter.searchQuery}
-              onChange={(e) => setActiveFilter({ ...activeFilter, searchQuery: e.target.value })}
-            />
-          </div>
-          <Input
-            placeholder="Filter by age group"
-            className="sm:max-w-[200px]"
-            value={activeFilter.ageGroup}
-            onChange={(e) => setActiveFilter({ ...activeFilter, ageGroup: e.target.value })}
-          />
-        </div>
+        {/* Performance Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <BarChart className="h-5 w-5 mr-2" />
+              Performance Overview
+            </CardTitle>
+            <CardDescription>Your academic performance compared to class averages</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[250px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <RechartsBarChart
+                  data={performanceData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="subject" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="score" fill="#8884d8" name="Your Score" />
+                  <Bar dataKey="average" fill="#82ca9d" name="Class Average" />
+                  <Bar dataKey="best" fill="#ffc658" name="Best Score" />
+                </RechartsBarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
 
-        <TabsContent value="schools" className="space-y-6">
-          <div className="grid gap-6 md:grid-cols-2">
-            {schools.map((school) => (
-              <Card key={school.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="aspect-video relative">
-                  <img
-                    src={school.imageUrl}
-                    alt={school.name}
-                    className="object-cover w-full h-full"
-                  />
-                  <div className="absolute top-4 right-4">
-                    <Badge className="bg-primary/90 text-white">
-                      <Star className="mr-1 h-3 w-3 fill-current" /> {school.rating}
-                    </Badge>
+        {/* Quick Actions */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+            <CardDescription>Common tasks and actions</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="w-full justify-start">
+                    <Video className="h-4 w-4 mr-2" />
+                    Join Online Class
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Join Online Class</DialogTitle>
+                    <DialogDescription>Select a class to join from the available options</DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      {["Math - 10:00 AM", "Science - 11:30 AM", "English - 2:00 PM"].map((cls, i) => (
+                        <Button key={i} variant="outline" className="w-full justify-between">
+                          {cls}
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <CardHeader>
-                  <CardTitle className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-xl">{school.name}</h3>
-                      <div className="flex items-center text-sm text-muted-foreground mt-1">
-                        <MapPin className="mr-1 h-4 w-4" />
-                        {school.location}
+                </DialogContent>
+              </Dialog>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="w-full justify-start">
+                    <CalendarIcon className="h-4 w-4 mr-2" />
+                    Apply for Leave
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Apply for Leave</DialogTitle>
+                    <DialogDescription>Select date range and provide reason</DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">From Date</label>
+                        <Calendar
+                          mode="single"
+                          selected={leaveDate}
+                          onSelect={setLeaveDate}
+                          className="rounded-md border"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">To Date</label>
+                        <Calendar
+                          mode="single"
+                          selected={leaveEndDate}
+                          onSelect={setLeaveEndDate}
+                          className="rounded-md border"
+                        />
                       </div>
                     </div>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex flex-wrap gap-2">
-                      <Badge variant="secondary">Age: {school.ageGroups}</Badge>
-                      <Badge variant="secondary">Classes: {school.classes}</Badge>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Message to Teacher</label>
+                      <Textarea 
+                        placeholder="Please explain the reason for your leave..."
+                        value={leaveMessage}
+                        onChange={(e) => setLeaveMessage(e.target.value)}
+                      />
                     </div>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      {school.admissionCriteria}
-                    </p>
-                    <Button className="w-full mt-4">View Details</Button>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
+                  <DialogFooter>
+                    <Button onClick={handleSubmitLeave}>Submit Request</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </CardContent>
+        </Card>
 
-        <TabsContent value="activities" className="space-y-6">
-          <div className="grid gap-6 md:grid-cols-2">
-            {activities.map((activity) => (
-              <Card key={activity.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="aspect-video relative">
-                  <img
-                    src={activity.imageUrl}
-                    alt={activity.name}
-                    className="object-cover w-full h-full"
-                  />
-                  <Badge 
-                    className="absolute top-4 right-4"
-                    variant={activity.type === "Class" ? "secondary" : "default"}
+        {/* Holidays Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Upcoming Holidays</CardTitle>
+            <CardDescription>School holidays and events</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {upcomingHolidays.map((holiday, idx) => (
+                <div key={idx} className="flex justify-between items-center">
+                  <div className="flex items-center">
+                    <div className="bg-primary/10 p-2 rounded-full mr-3">
+                      <CalendarIcon className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-medium">{holiday.name}</p>
+                      <p className="text-sm text-muted-foreground">{holiday.date}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <Button variant="link" className="p-0" onClick={() => window.location.href="/calendar"}>
+                View full calendar
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Purchases */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <ShoppingCart className="h-5 w-5 mr-2" />
+              Recent Purchases
+            </CardTitle>
+            <CardDescription>Your recent transactions</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {purchases.map((purchase) => (
+                <div key={purchase.id} className="flex justify-between items-center py-2 border-b">
+                  <div>
+                    <p className="font-medium">{purchase.item}</p>
+                    <p className="text-sm text-muted-foreground">{purchase.date}</p>
+                  </div>
+                  <p className="font-semibold">{purchase.price}</p>
+                </div>
+              ))}
+              <Button variant="link" className="p-0">View all purchases</Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Notifications */}
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Bell className="h-5 w-5 mr-2" />
+              Notifications
+            </CardTitle>
+            <CardDescription>Messages from teachers and school</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="h-[300px]">
+              <div className="space-y-4">
+                {notifications.map((notification) => (
+                  <div 
+                    key={notification.id} 
+                    className={`flex p-3 rounded-lg ${notification.unread ? 'bg-secondary' : ''}`}
+                    onClick={() => markAsRead(notification.id)}
                   >
-                    {activity.type}
-                  </Badge>
-                </div>
-                <CardHeader>
-                  <CardTitle className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-xl">{activity.name}</h3>
-                      <div className="flex items-center text-sm text-muted-foreground mt-1">
-                        <MapPin className="mr-1 h-4 w-4" />
-                        {activity.location}
+                    <Avatar className="h-10 w-10 mr-3">
+                      <AvatarImage src={notification.avatar} />
+                      <AvatarFallback>{notification.teacher[0]}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <div className="flex justify-between">
+                        <p className="font-medium">{notification.teacher}</p>
+                        <p className="text-xs text-muted-foreground">{notification.time}</p>
+                      </div>
+                      <p className="text-sm mt-1">{notification.message}</p>
+                      <div className="mt-2">
+                        <Button variant="outline" size="sm">
+                          <MessageSquare className="h-3 w-3 mr-1" />
+                          Reply
+                        </Button>
                       </div>
                     </div>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex flex-wrap gap-2">
-                      <Badge variant="outline">{activity.category}</Badge>
-                      <Badge variant="secondary">Age: {activity.ageGroup}</Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Organized by: {activity.organizer}
-                    </p>
-                    {activity.schedule && (
-                      <p className="text-sm">Schedule: {activity.schedule}</p>
+                    {notification.unread && (
+                      <div className="w-2 h-2 rounded-full bg-primary mt-2"></div>
                     )}
-                    {activity.date && (
-                      <p className="text-sm">Date: {new Date(activity.date).toLocaleDateString()}</p>
-                    )}
-                    <Button className="w-full mt-4">Book Now</Button>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-      </Tabs>
+                ))}
+              </div>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
