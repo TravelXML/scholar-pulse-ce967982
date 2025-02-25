@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/pagination";
 import { School, Activity, ShoppingCart, Filter } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -187,4 +188,21 @@ export default function Dashboard() {
                         className="cursor-pointer"
                       >
                         {index + 1}
-                      
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
