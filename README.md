@@ -46,7 +46,7 @@ Scholar-Plus aims to bridge the gap between educational institutions and their s
   - Auto-generate QR codes for campus facility access.
 
 - **Home Dashboard:**
-- ![Uploading image.png…]()
+  ![image](https://github.com/user-attachments/assets/34522077-ea17-4ddd-90ed-b4c2b9f4a402)
 
   - **School Admissions Tab:** Lists available schools with filters for age and class.
   - **Extracurricular Activities Tab:** Displays activities (dance, karate, pottery, etc.) and competitions.
