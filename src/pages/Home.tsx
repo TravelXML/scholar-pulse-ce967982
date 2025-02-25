@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { 
   Card, 
@@ -293,13 +294,13 @@ export default function Home() {
             <CardDescription>Recent photos and events</CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full max-w-md grid-cols-2">
                 <TabsTrigger value="all">All Photos</TabsTrigger>
                 <TabsTrigger value="child">My Child</TabsTrigger>
               </TabsList>
-              <TabsContent value="all" className="mt-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              <TabsContent value="all">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                   {recentAlbums.map((album) => (
                     <div key={album.id} className="group cursor-pointer" onClick={() => navigate("/dashboard")}>
                       <div className="relative aspect-video rounded-md overflow-hidden mb-2">
@@ -329,8 +330,8 @@ export default function Home() {
                   </Button>
                 </div>
               </TabsContent>
-              <TabsContent value="child" className="mt-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <TabsContent value="child">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
                   {childPhotos.map((photo) => (
                     <div key={photo.id} className="group cursor-pointer" onClick={() => navigate("/dashboard")}>
                       <div className="relative aspect-video rounded-md overflow-hidden mb-2">
@@ -466,7 +467,7 @@ export default function Home() {
                   </div>
                 </div>
               ))}
-              <Button variant="link" className="p-0" style={{ color: "#0B6623" }} onClick={() => window.location.href="/calendar"}>
+              <Button variant="link" className="p-0" style={{ color: "#0B6623" }} onClick={() => navigate("/calendar")}>
                 View full calendar
               </Button>
             </div>
@@ -481,59 +482,59 @@ export default function Home() {
               School Supplies
             </CardTitle>
             <CardDescription>Manage your school supplies and purchases</CardDescription>
-            <Tabs value={productTab} onValueChange={setProductTab} className="w-full">
+          </CardHeader>
+          <CardContent>
+            <Tabs defaultValue={productTab} onValueChange={setProductTab} className="w-full">
               <TabsList className="grid w-full max-w-md grid-cols-2">
                 <TabsTrigger value="recent">Recent Purchases</TabsTrigger>
                 <TabsTrigger value="top">Top Selling Products</TabsTrigger>
               </TabsList>
-            </Tabs>
-          </CardHeader>
-          <CardContent>
-            <TabsContent value="recent" className="mt-0">
-              <div className="space-y-4">
-                {purchases.map((purchase) => (
-                  <div key={purchase.id} className="flex justify-between items-center py-2 border-b">
-                    <div>
-                      <p className="font-medium">{purchase.item}</p>
-                      <p className="text-sm text-muted-foreground">{purchase.date}</p>
-                    </div>
-                    <p className="font-semibold">{purchase.price}</p>
-                  </div>
-                ))}
-                <Button 
-                  variant="link" 
-                  className="p-0" 
-                  style={{ color: "#0B6623" }}
-                  onClick={() => navigate("/dashboard")}
-                >
-                  View all purchases
-                </Button>
-              </div>
-            </TabsContent>
-            <TabsContent value="top" className="mt-0">
-              <div className="space-y-4">
-                {topProducts.map((product) => (
-                  <div key={product.id} className="flex justify-between items-center py-2 border-b">
-                    <div>
-                      <p className="font-medium">{product.item}</p>
-                      <div className="flex gap-2 text-xs mt-1">
-                        <Badge variant="outline">{product.age}</Badge>
-                        <Badge variant="secondary">{product.category}</Badge>
+              <TabsContent value="recent">
+                <div className="space-y-4 mt-4">
+                  {purchases.map((purchase) => (
+                    <div key={purchase.id} className="flex justify-between items-center py-2 border-b">
+                      <div>
+                        <p className="font-medium">{purchase.item}</p>
+                        <p className="text-sm text-muted-foreground">{purchase.date}</p>
                       </div>
+                      <p className="font-semibold">{purchase.price}</p>
                     </div>
-                    <p className="font-semibold">{product.price}</p>
-                  </div>
-                ))}
-                <Button 
-                  variant="link" 
-                  className="p-0" 
-                  style={{ color: "#0B6623" }}
-                  onClick={() => navigate("/dashboard")}
-                >
-                  View all products
-                </Button>
-              </div>
-            </TabsContent>
+                  ))}
+                  <Button 
+                    variant="link" 
+                    className="p-0" 
+                    style={{ color: "#0B6623" }}
+                    onClick={() => navigate("/dashboard")}
+                  >
+                    View all purchases
+                  </Button>
+                </div>
+              </TabsContent>
+              <TabsContent value="top">
+                <div className="space-y-4 mt-4">
+                  {topProducts.map((product) => (
+                    <div key={product.id} className="flex justify-between items-center py-2 border-b">
+                      <div>
+                        <p className="font-medium">{product.item}</p>
+                        <div className="flex gap-2 text-xs mt-1">
+                          <Badge variant="outline">{product.age}</Badge>
+                          <Badge variant="secondary">{product.category}</Badge>
+                        </div>
+                      </div>
+                      <p className="font-semibold">{product.price}</p>
+                    </div>
+                  ))}
+                  <Button 
+                    variant="link" 
+                    className="p-0" 
+                    style={{ color: "#0B6623" }}
+                    onClick={() => navigate("/dashboard")}
+                  >
+                    View all products
+                  </Button>
+                </div>
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
 

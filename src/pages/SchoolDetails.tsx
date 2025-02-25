@@ -128,10 +128,4 @@ const generateDetailedSchoolData = (baseSchool: any): SchoolDetails => {
           id: "t1",
           name: ["Emily Johnson", "Daniel Martinez", "Rebecca Lewis", "John Miller"][Math.floor(Math.random() * 4)],
           role: "Science Faculty Head",
-          image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300",
-          bio: "Passionate about making science accessible and fun for students."
-        },
-        {
-          id: "t2",
-          name: ["Patricia Clark", "Kevin Taylor", "Laura Allen", "Steven Wright"][Math.floor(Math.random() * 4)],
-          role
+          image: "https://images.unsplash.com/photo-1494790108377-
