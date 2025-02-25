@@ -20,7 +20,9 @@ import {
   ShoppingCart, 
   User, 
   Video, 
-  ChevronRight 
+  ChevronRight,
+  Image,
+  Images
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -30,6 +32,7 @@ import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
+import { useNavigate } from "react-router-dom";
 import { 
   BarChart as RechartsBarChart, 
   Bar, 
@@ -43,9 +46,12 @@ import {
 
 export default function Home() {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [leaveDate, setLeaveDate] = useState<Date | undefined>(new Date());
   const [leaveEndDate, setLeaveEndDate] = useState<Date | undefined>(new Date());
   const [leaveMessage, setLeaveMessage] = useState("");
+  const [activeTab, setActiveTab] = useState("all");
+  const [productTab, setProductTab] = useState("recent");
   const [notifications, setNotifications] = useState([
     {
       id: 1,
@@ -87,6 +93,12 @@ export default function Home() {
     { id: 3, item: "Art Supplies Kit", date: "18 Feb 2023", price: "$32.50" }
   ];
 
+  const topProducts = [
+    { id: 1, item: "Student Backpack", age: "8-12 yrs", category: "Bags", price: "$39.99" },
+    { id: 2, item: "Math Learning Set", age: "6-9 yrs", category: "Learning Materials", price: "$25.50" },
+    { id: 3, item: "Water Bottle (BPA Free)", age: "All Ages", category: "Accessories", price: "$15.99" }
+  ];
+
   const upcomingHolidays = [
     { date: "May 25", name: "Summer Break Begins" },
     { date: "Jun 19", name: "Founder's Day" },
@@ -101,6 +113,58 @@ export default function Home() {
     website: "www.springfieldelementary.edu",
     principalName: "Dr. Eleanor Thompson"
   };
+
+  const recentAlbums = [
+    {
+      id: 1,
+      title: "Science Fair Exhibition",
+      date: "April 15, 2023",
+      coverImage: "https://images.unsplash.com/photo-1588702547919-26089e690ecc?w=800&h=500",
+      photoCount: 24
+    },
+    {
+      id: 2,
+      title: "Annual Sports Day",
+      date: "March 10, 2023",
+      coverImage: "https://images.unsplash.com/photo-1576670392958-032e0152968a?w=800&h=500",
+      photoCount: 45
+    },
+    {
+      id: 3,
+      title: "Cultural Festival",
+      date: "February 25, 2023",
+      coverImage: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&h=500",
+      photoCount: 32
+    },
+    {
+      id: 4,
+      title: "Classroom Activities",
+      date: "January 20, 2023",
+      coverImage: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=500",
+      photoCount: 18
+    }
+  ];
+
+  const childPhotos = [
+    {
+      id: 1,
+      title: "Art Class Painting",
+      date: "April 5, 2023",
+      image: "https://images.unsplash.com/photo-1588075592446-265bad1d6d85?w=800&h=500"
+    },
+    {
+      id: 2,
+      title: "School Play Performance",
+      date: "March 22, 2023",
+      image: "https://images.unsplash.com/photo-1489710437720-ebb67ec84dd2?w=800&h=500"
+    },
+    {
+      id: 3,
+      title: "Science Project",
+      date: "February 15, 2023",
+      image: "https://images.unsplash.com/photo-1562774053-701939374585?w=800&h=500"
+    }
+  ];
 
   const handleSubmitLeave = () => {
     if (!leaveDate || !leaveEndDate || !leaveMessage) {
@@ -220,6 +284,84 @@ export default function Home() {
           </CardContent>
         </Card>
 
+        {/* Recent Albums */}
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center" style={{ color: "#0B6623" }}>
+              <Images className="h-5 w-5 mr-2" style={{ color: "#0B6623" }} />
+              School Albums
+            </CardTitle>
+            <CardDescription>Recent photos and events</CardDescription>
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid w-full max-w-md grid-cols-2">
+                <TabsTrigger value="all">All Photos</TabsTrigger>
+                <TabsTrigger value="child">My Child</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </CardHeader>
+          <CardContent>
+            <TabsContent value="all" className="mt-0">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                {recentAlbums.map((album) => (
+                  <div key={album.id} className="group cursor-pointer" onClick={() => navigate("/dashboard")}>
+                    <div className="relative aspect-video rounded-md overflow-hidden mb-2">
+                      <img 
+                        src={album.coverImage} 
+                        alt={album.title}
+                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
+                        <Badge className="bg-white/80 text-black">{album.photoCount} Photos</Badge>
+                      </div>
+                    </div>
+                    <h4 className="font-medium text-sm">{album.title}</h4>
+                    <p className="text-xs text-muted-foreground">{album.date}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-center mt-4">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => navigate("/dashboard")}
+                  style={{ color: "#0B6623", borderColor: "#0B6623" }}
+                >
+                  View All Albums
+                  <ChevronRight className="h-4 w-4 ml-1" />
+                </Button>
+              </div>
+            </TabsContent>
+            <TabsContent value="child" className="mt-0">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {childPhotos.map((photo) => (
+                  <div key={photo.id} className="group cursor-pointer" onClick={() => navigate("/dashboard")}>
+                    <div className="relative aspect-video rounded-md overflow-hidden mb-2">
+                      <img 
+                        src={photo.image} 
+                        alt={photo.title}
+                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <h4 className="font-medium text-sm">{photo.title}</h4>
+                    <p className="text-xs text-muted-foreground">{photo.date}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-center mt-4">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => navigate("/dashboard")}
+                  style={{ color: "#0B6623", borderColor: "#0B6623" }}
+                >
+                  View All Photos
+                  <ChevronRight className="h-4 w-4 ml-1" />
+                </Button>
+              </div>
+            </TabsContent>
+          </CardContent>
+        </Card>
+
         {/* Quick Actions */}
         <Card>
           <CardHeader>
@@ -333,27 +475,66 @@ export default function Home() {
         </Card>
 
         {/* Purchases */}
-        <Card>
+        <Card className="md:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center" style={{ color: "#0B6623" }}>
               <ShoppingCart className="h-5 w-5 mr-2" style={{ color: "#0B6623" }} />
-              Recent Purchases
+              School Supplies
             </CardTitle>
-            <CardDescription>Your recent transactions</CardDescription>
+            <CardDescription>Manage your school supplies and purchases</CardDescription>
+            <Tabs value={productTab} onValueChange={setProductTab} className="w-full">
+              <TabsList className="grid w-full max-w-md grid-cols-2">
+                <TabsTrigger value="recent">Recent Purchases</TabsTrigger>
+                <TabsTrigger value="top">Top Selling Products</TabsTrigger>
+              </TabsList>
+            </Tabs>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {purchases.map((purchase) => (
-                <div key={purchase.id} className="flex justify-between items-center py-2 border-b">
-                  <div>
-                    <p className="font-medium">{purchase.item}</p>
-                    <p className="text-sm text-muted-foreground">{purchase.date}</p>
+            <TabsContent value="recent" className="mt-0">
+              <div className="space-y-4">
+                {purchases.map((purchase) => (
+                  <div key={purchase.id} className="flex justify-between items-center py-2 border-b">
+                    <div>
+                      <p className="font-medium">{purchase.item}</p>
+                      <p className="text-sm text-muted-foreground">{purchase.date}</p>
+                    </div>
+                    <p className="font-semibold">{purchase.price}</p>
                   </div>
-                  <p className="font-semibold">{purchase.price}</p>
-                </div>
-              ))}
-              <Button variant="link" className="p-0" style={{ color: "#0B6623" }}>View all purchases</Button>
-            </div>
+                ))}
+                <Button 
+                  variant="link" 
+                  className="p-0" 
+                  style={{ color: "#0B6623" }}
+                  onClick={() => navigate("/dashboard")}
+                >
+                  View all purchases
+                </Button>
+              </div>
+            </TabsContent>
+            <TabsContent value="top" className="mt-0">
+              <div className="space-y-4">
+                {topProducts.map((product) => (
+                  <div key={product.id} className="flex justify-between items-center py-2 border-b">
+                    <div>
+                      <p className="font-medium">{product.item}</p>
+                      <div className="flex gap-2 text-xs mt-1">
+                        <Badge variant="outline">{product.age}</Badge>
+                        <Badge variant="secondary">{product.category}</Badge>
+                      </div>
+                    </div>
+                    <p className="font-semibold">{product.price}</p>
+                  </div>
+                ))}
+                <Button 
+                  variant="link" 
+                  className="p-0" 
+                  style={{ color: "#0B6623" }}
+                  onClick={() => navigate("/dashboard")}
+                >
+                  View all products
+                </Button>
+              </div>
+            </TabsContent>
           </CardContent>
         </Card>
 
