@@ -1,17 +1,17 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, School, Calendar } from "lucide-react";
+import { UserCheck, School2, Calendar } from "lucide-react";
 
 const statistics = [
   {
     title: "Total Students",
     value: "1,234",
-    icon: Users,
+    icon: UserCheck,  // Changed from Users to UserCheck
   },
   {
     title: "Active Schools",
     value: "45",
-    icon: School,
+    icon: School2,    // Changed from School to School2
   },
   {
     title: "Upcoming Events",
