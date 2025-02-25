@@ -34,13 +34,13 @@ Scholar-Plus aims to bridge the gap between educational institutions and their s
 ## Features
 
 - **Student Profiles:**
-- ![image](https://github.com/user-attachments/assets/76801e6e-a646-4946-9fb4-011a1a8702c9)
+   ![image](https://github.com/user-attachments/assets/76801e6e-a646-4946-9fb4-011a1a8702c9)
 
   - Capture details: name, age, blood group, birth date, Aadhar number, etc.
-  - ![image](https://github.com/user-attachments/assets/fbeccd8d-c8b9-4f3a-b67e-e1bbe1fe6fd6)
+   ![image](https://github.com/user-attachments/assets/fbeccd8d-c8b9-4f3a-b67e-e1bbe1fe6fd6)
 
   - Manage parent/guardian information and emergency contacts.
-  - ![image](https://github.com/user-attachments/assets/a3d0f4b6-3c23-4c28-83c9-7a3294cd6e08)
+    ![image](https://github.com/user-attachments/assets/a3d0f4b6-3c23-4c28-83c9-7a3294cd6e08)
 
   - Upload profile photos and indicate special needs.
   - Auto-generate QR codes for campus facility access.
