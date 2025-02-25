@@ -17,6 +17,7 @@ import {
   FileText,
   Image as ImageIcon,
   Filter,
+  Calendar as CalendarIcon, // Add Calendar icon import and alias it as CalendarIcon
 } from "lucide-react";
 import QRCode from "react-qr-code";
 import {
