@@ -1,6 +1,6 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { 
   Users, 
   School, 
@@ -8,11 +8,14 @@ import {
   ArrowRight, 
   Star, 
   ShoppingBag,
-  Heart 
+  Heart,
+  Search,
+  Filter,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
 
 interface SchoolCard {
   id: string;
@@ -40,14 +43,17 @@ interface SchoolItem {
   image: string;
   category: string;
   price: number;
-  colors: string[];
+  colors?: string[];
   sizes?: string[];
   sku: string;
   description: string;
+  tags: string[];
 }
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState("all");
   
   const statistics = [
     {
@@ -104,7 +110,6 @@ export default function Dashboard() {
       preferredFor: ["Environmental Education", "Outdoor Activities", "Sustainability"],
       description: "Eco-friendly school with focus on nature-based learning."
     },
-    // ... Add 4 more schools with similar structure
   ];
 
   const activities: ActivityCard[] = [
@@ -144,43 +149,129 @@ export default function Dashboard() {
       preferredFor: ["Physical Development", "Team Building", "Ages 4-12"],
       description: "Multi-sports program focusing on fitness and teamwork."
     },
-    // ... Add 4 more activities with similar structure
   ];
 
   const schoolItems: SchoolItem[] = [
     {
       id: "1",
-      name: "Classic School Uniform Set",
-      image: "https://images.unsplash.com/photo-1621570171347-c6276be7b47d?w=800&h=600",
-      category: "Uniforms",
-      price: 45.99,
-      colors: ["Navy", "White", "Grey"],
-      sizes: ["4-5Y", "6-7Y", "8-9Y", "10-11Y"],
-      sku: "UNF-001",
-      description: "Complete set including shirt, pants/skirt, and tie"
+      name: "Premium Ergonomic Backpack",
+      image: "https://images.unsplash.com/photo-1577401239170-897942555fb3?w=800&h=600",
+      category: "Backpacks & Bags",
+      price: 49.99,
+      colors: ["Navy", "Black", "Red"],
+      sku: "BAG-001",
+      description: "Durable school backpack with padded laptop compartment",
+      tags: ["backpack", "storage", "ergonomic"]
     },
     {
       id: "2",
-      name: "Premium School Bag",
-      image: "https://images.unsplash.com/photo-1577401239170-897942555fb3?w=800&h=600",
-      category: "Accessories",
-      price: 29.99,
-      colors: ["Blue", "Black", "Red"],
-      sku: "BAG-001",
-      description: "Ergonomic design with multiple compartments"
+      name: "Complete Stationery Set",
+      image: "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=800&h=600",
+      category: "Stationery & School Supplies",
+      price: 24.99,
+      sku: "STAT-001",
+      description: "Essential stationery pack with notebooks and writing tools",
+      tags: ["stationery", "essentials", "writing"]
     },
     {
       id: "3",
-      name: "Mathematical Learning Kit",
-      image: "https://images.unsplash.com/photo-1594912772762-8435b9e0e506?w=800&h=600",
-      category: "Educational Toys",
-      price: 34.99,
-      colors: ["Multicolor"],
-      sku: "EDU-001",
-      description: "Complete set of mathematical learning tools"
+      name: "Student Laptop",
+      image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&h=600",
+      category: "Technology & Gadgets",
+      price: 499.99,
+      sku: "TECH-001",
+      description: "Educational laptop optimized for learning",
+      tags: ["technology", "computer", "digital"]
     },
-    // ... Add 7 more items with similar structure
+    {
+      id: "4",
+      name: "School Uniform Set",
+      image: "https://images.unsplash.com/photo-1621570171347-c6276be7b47d?w=800&h=600",
+      category: "Uniforms & Clothing",
+      price: 59.99,
+      sizes: ["4-5Y", "6-7Y", "8-9Y", "10-11Y"],
+      colors: ["Navy", "White"],
+      sku: "UNI-001",
+      description: "Complete school uniform set",
+      tags: ["uniform", "clothing", "dress-code"]
+    },
+    {
+      id: "5",
+      name: "Insulated Lunch Set",
+      image: "https://images.unsplash.com/photo-1584992236310-6ded3f94d157?w=800&h=600",
+      category: "Lunch Boxes & Water Bottles",
+      price: 29.99,
+      colors: ["Blue", "Pink", "Green"],
+      sku: "LUNCH-001",
+      description: "Insulated lunch box with matching water bottle",
+      tags: ["lunch", "food", "hydration"]
+    },
+    {
+      id: "6",
+      name: "Art Supply Kit",
+      image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&h=600",
+      category: "Art & Craft Supplies",
+      price: 39.99,
+      sku: "ART-001",
+      description: "Complete art kit for creative projects",
+      tags: ["art", "creative", "supplies"]
+    },
+    {
+      id: "7",
+      name: "Sports Equipment Pack",
+      image: "https://images.unsplash.com/photo-1526676037777-05a232554f77?w=800&h=600",
+      category: "Sports & Activity Gear",
+      price: 79.99,
+      sku: "SPORT-001",
+      description: "Essential sports equipment bundle",
+      tags: ["sports", "activity", "physical"]
+    },
+    {
+      id: "8",
+      name: "Academic Planner",
+      image: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?w=800&h=600",
+      category: "Organizers & Planners",
+      price: 19.99,
+      sku: "ORG-001",
+      description: "Student planner with study tracking",
+      tags: ["organization", "planning", "academic"]
+    },
+    {
+      id: "9",
+      name: "Hygiene Care Package",
+      image: "https://images.unsplash.com/photo-1584362522949-b94fd54bbdb4?w=800&h=600",
+      category: "Personal Care & Hygiene",
+      price: 34.99,
+      sku: "CARE-001",
+      description: "Essential personal care items for school",
+      tags: ["hygiene", "health", "care"]
+    },
+    {
+      id: "10",
+      name: "Math Learning Kit",
+      image: "https://images.unsplash.com/photo-1594912772762-8435b9e0e506?w=800&h=600",
+      category: "Books & Learning Materials",
+      price: 44.99,
+      sku: "LEARN-001",
+      description: "Comprehensive mathematics learning kit",
+      tags: ["education", "math", "learning"]
+    }
   ];
+
+  const categories = Array.from(new Set(schoolItems.map(item => item.category)));
+
+  const filterItems = (items: SchoolItem[]) => {
+    return items.filter(item => {
+      const matchesSearch = searchQuery.toLowerCase() === '' || 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      
+      const matchesFilter = activeFilter === 'all' || item.category === activeFilter;
+      
+      return matchesSearch && matchesFilter;
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -281,19 +372,44 @@ export default function Dashboard() {
         </TabsContent>
 
         <TabsContent value="supplies" className="space-y-4">
+          <div className="flex gap-4 flex-col md:flex-row md:items-center">
+            <div className="relative flex-1">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search supplies..."
+                className="pl-8"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <select
+              className="border rounded p-2"
+              value={activeFilter}
+              onChange={(e) => setActiveFilter(e.target.value)}
+            >
+              <option value="all">All Categories</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>{category}</option>
+              ))}
+            </select>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {schoolItems.map((item) => (
-              <Card key={item.id} className="overflow-hidden">
+            {filterItems(schoolItems).map((item) => (
+              <Card 
+                key={item.id} 
+                className="overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] group"
+              >
                 <div className="aspect-video relative">
                   <img 
                     src={item.image} 
                     alt={item.name}
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                   />
                   <Button
                     size="icon"
                     variant="secondary"
-                    className="absolute top-2 right-2"
+                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   >
                     <Heart className="h-4 w-4" />
                   </Button>
@@ -307,6 +423,7 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <p className="text-sm text-muted-foreground">{item.description}</p>
+                  <Badge variant="secondary">{item.category}</Badge>
                   {item.colors && (
                     <div className="space-y-1">
                       <p className="text-sm font-medium">Available Colors:</p>
