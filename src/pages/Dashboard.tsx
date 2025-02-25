@@ -44,24 +44,6 @@ export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
   
-  const statistics = [
-    {
-      title: "Total Students",
-      value: "1,234",
-      icon: Users,
-    },
-    {
-      title: "Active Schools",
-      value: "45",
-      icon: School,
-    },
-    {
-      title: "Upcoming Events",
-      value: "23",
-      icon: Calendar,
-    },
-  ];
-
   const schools: SchoolCard[] = [
     {
       id: "1",

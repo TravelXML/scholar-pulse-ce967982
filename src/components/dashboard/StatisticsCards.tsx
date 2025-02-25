@@ -6,12 +6,12 @@ const statistics = [
   {
     title: "Total Students",
     value: "1,234",
-    icon: UserCheck,  // Changed from Users to UserCheck
+    icon: UserCheck,
   },
   {
     title: "Active Schools",
     value: "45",
-    icon: School2,    // Changed from School to School2
+    icon: School2,
   },
   {
     title: "Upcoming Events",
