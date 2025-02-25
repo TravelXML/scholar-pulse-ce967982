@@ -1,16 +1,45 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Camera, HeartPulse, Upload, Phone } from "lucide-react";
+import {
+  Camera,
+  HeartPulse,
+  Upload,
+  Phone,
+  School,
+  Brain,
+  Award,
+  Flag,
+  Star,
+  FileText,
+  Image as ImageIcon,
+} from "lucide-react";
 import QRCode from "react-qr-code";
 
 interface EmergencyContact {
   name: string;
   phone: string;
   relation: string;
+}
+
+interface TimelineEvent {
+  id: string;
+  type: "academic" | "medical" | "counseling" | "award" | "flag";
+  title: string;
+  date: string;
+  description: string;
+  category: string;
+  attachments?: {
+    name: string;
+    type: "document" | "image";
+  }[];
+  teacher?: {
+    name: string;
+    subject: string;
+  };
+  starred?: boolean;
 }
 
 export default function Profile() {
@@ -37,6 +66,108 @@ export default function Profile() {
     studentId: "STU2024001"
   });
 
+  const [timelineEvents] = useState<TimelineEvent[]>([
+    {
+      id: "1",
+      type: "academic",
+      title: "First Term Results",
+      date: "2024-03-15",
+      description: "Achieved A grade in Mathematics and Science",
+      category: "Academics",
+      attachments: [
+        { name: "result_card.pdf", type: "document" }
+      ],
+      teacher: {
+        name: "Mrs. Smith",
+        subject: "Mathematics"
+      },
+      starred: true
+    },
+    {
+      id: "2",
+      type: "medical",
+      title: "Annual Health Checkup",
+      date: "2024-02-20",
+      description: "Regular health checkup - all parameters normal",
+      category: "Health",
+      attachments: [
+        { name: "health_report.pdf", type: "document" }
+      ]
+    },
+    {
+      id: "3",
+      type: "award",
+      title: "Science Fair Winner",
+      date: "2024-01-15",
+      description: "First place in Annual Science Fair",
+      category: "Achievement",
+      attachments: [
+        { name: "project_photo.jpg", type: "image" },
+        { name: "certificate.pdf", type: "document" }
+      ],
+      teacher: {
+        name: "Mr. Johnson",
+        subject: "Science"
+      },
+      starred: true
+    },
+    {
+      id: "4",
+      type: "counseling",
+      title: "Career Guidance Session",
+      date: "2024-01-10",
+      description: "Discussion about future academic paths",
+      category: "Guidance",
+      teacher: {
+        name: "Ms. Parker",
+        subject: "Counselor"
+      }
+    },
+    {
+      id: "5",
+      type: "flag",
+      title: "Outstanding Performance",
+      date: "2023-12-20",
+      description: "Exceptional leadership in class activities",
+      category: "Recognition",
+      teacher: {
+        name: "Mrs. Wilson",
+        subject: "English"
+      },
+      starred: true
+    }
+  ]);
+
+  const getEventIcon = (type: TimelineEvent["type"]) => {
+    switch (type) {
+      case "academic":
+        return <School className="h-5 w-5" />;
+      case "medical":
+        return <HeartPulse className="h-5 w-5" />;
+      case "counseling":
+        return <Brain className="h-5 w-5" />;
+      case "award":
+        return <Award className="h-5 w-5" />;
+      case "flag":
+        return <Flag className="h-5 w-5" />;
+    }
+  };
+
+  const getBadgeVariant = (type: TimelineEvent["type"]) => {
+    switch (type) {
+      case "academic":
+        return "default";
+      case "medical":
+        return "destructive";
+      case "counseling":
+        return "secondary";
+      case "award":
+        return "default";
+      case "flag":
+        return "outline";
+    }
+  };
+
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
@@ -47,7 +178,6 @@ export default function Profile() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        {/* Profile Picture & QR Section */}
         <Card>
           <CardHeader>
             <CardTitle>Profile & QR Code</CardTitle>
@@ -79,7 +209,6 @@ export default function Profile() {
           </CardContent>
         </Card>
 
-        {/* Personal Details */}
         <Card>
           <CardHeader>
             <CardTitle>Personal Details</CardTitle>
@@ -106,7 +235,6 @@ export default function Profile() {
           </CardContent>
         </Card>
 
-        {/* Family Information */}
         <Card>
           <CardHeader>
             <CardTitle>Family Information</CardTitle>
@@ -133,7 +261,6 @@ export default function Profile() {
           </CardContent>
         </Card>
 
-        {/* Emergency Contacts */}
         <Card>
           <CardHeader>
             <CardTitle>Emergency Contacts</CardTitle>
@@ -156,7 +283,6 @@ export default function Profile() {
           </CardContent>
         </Card>
 
-        {/* Physical Status */}
         <Card className="md:col-span-2">
           <CardHeader>
             <CardTitle>Physical Status</CardTitle>
@@ -175,6 +301,82 @@ export default function Profile() {
                   <p className="text-sm mt-2">{studentData.physicalDetails}</p>
                 )}
               </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle>Student Timeline</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="relative space-y-8">
+              <div className="absolute left-9 top-0 bottom-0 w-px bg-border" />
+
+              {timelineEvents.map((event) => (
+                <div key={event.id} className="relative flex gap-6">
+                  <div className="relative">
+                    <div className={`
+                      h-10 w-10 rounded-full border-2 flex items-center justify-center bg-background
+                      ${event.starred ? 'border-primary' : 'border-border'}
+                    `}>
+                      {getEventIcon(event.type)}
+                    </div>
+                    {event.starred && (
+                      <div className="absolute -top-1 -right-1">
+                        <Star className="h-4 w-4 fill-primary text-primary" />
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-medium">{event.title}</h3>
+                      <Badge variant={getBadgeVariant(event.type)}>
+                        {event.category}
+                      </Badge>
+                    </div>
+                    
+                    <p className="text-sm text-muted-foreground">
+                      {new Date(event.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </p>
+                    
+                    <p className="text-sm">{event.description}</p>
+
+                    {event.teacher && (
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <span>Added by {event.teacher.name}</span>
+                        <span>•</span>
+                        <span>{event.teacher.subject}</span>
+                      </div>
+                    )}
+
+                    {event.attachments && event.attachments.length > 0 && (
+                      <div className="flex gap-2 mt-2">
+                        {event.attachments.map((attachment, index) => (
+                          <Button
+                            key={index}
+                            variant="outline"
+                            size="sm"
+                            className="h-8"
+                          >
+                            {attachment.type === "document" ? (
+                              <FileText className="h-4 w-4 mr-2" />
+                            ) : (
+                              <ImageIcon className="h-4 w-4 mr-2" />
+                            )}
+                            {attachment.name}
+                          </Button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
