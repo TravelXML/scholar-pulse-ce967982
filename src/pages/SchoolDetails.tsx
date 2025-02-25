@@ -675,4 +675,4 @@ export default function SchoolDetails() {
                   <a 
                     href={`https://${schoolDetails.socialMedia.youtube}`}
                     target="_blank"
-                
+                    rel="noopener norefer
