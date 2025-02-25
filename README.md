@@ -38,6 +38,10 @@ Scholar Plus bridges the gap between educational institutions and their stakehol
 ## Enhanced Features
 
 ### Student Profiles & Timeline
+![image](https://github.com/user-attachments/assets/930b3168-27af-4343-8cfc-22e41b006628)
+![image](https://github.com/user-attachments/assets/e8ff9141-36f4-4969-bc77-c93a3ccde184)
+![image](https://github.com/user-attachments/assets/a41d2c0d-8fab-4599-9b69-8524577c3eff)
+![image](https://github.com/user-attachments/assets/f053969d-36f9-4e25-9165-72cc11124f3b)
 
 - **Personal & Academic Details:**
   - Capture essentials: name, age, blood group, birth date, Aadhar number, and class roll number.
@@ -63,11 +67,16 @@ Scholar Plus bridges the gap between educational institutions and their stakehol
 ### Dynamic Home Dashboard
 
 - **Dual-Tab Interface:**
-  - **Schools for Admission:**  
+  - **Schools for Admission:**
+   ![image](https://github.com/user-attachments/assets/f8942299-2a04-4846-bd4e-ccf9b8752c1d)
+ 
     - Lists available schools with filters for age, class, and board types (CBSE, ISSC, State Board).
     - Displays tags indicating available class ranges (from playschools/nursery to higher standards) and “buy” options for related supplies.
-  - **Extracurricular Activities & Competitions:**  
-    - Showcases activities (dance, karate, pottery, etc.) with search and filtering options based on age groups, categories, and organizers.
+  - **Extracurricular Activities & Competitions:**
+    ![image](https://github.com/user-attachments/assets/0a829c90-d5f6-4ca6-bd1e-423b39efed74)
+
+    - Showcases activities (dance, karate, pottery, etc.) with search and filtering options based on age groups, categories, and organizers.   
+
 
 - **Additional Home Sections:**
   - **Recent Albums:**  
@@ -78,12 +87,16 @@ Scholar Plus bridges the gap between educational institutions and their stakehol
 ---
 
 ### Interactive Dashboard & School Supplies
+![image](https://github.com/user-attachments/assets/ffd70d68-6716-4555-a567-039610aa00cc)
+![image](https://github.com/user-attachments/assets/c1253b3e-1af7-47bb-9806-f64fa7153699)
+![image](https://github.com/user-attachments/assets/71f5afb6-6ca4-4245-ad97-4f1bf568ddac)
 
 - **Overview Cards:**  
   - Display key metrics in a two-card-per-row layout for Schools, Activities, and School Supplies.
   - Each card includes intuitive icons (all styled in forest green #OB6623), interactive hover effects, and click actions.
 
 - **School Supplies Module:**
+-  ![image](https://github.com/user-attachments/assets/3b6452ec-8bbb-4402-a74a-754726b9729d)
   - **Expanded Categories:**  
     - Backpacks & Bags  
     - Stationery & School Supplies  
