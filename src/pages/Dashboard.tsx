@@ -1,21 +1,11 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { 
-  Users, 
-  School, 
-  Calendar, 
-  ArrowRight, 
-  Star, 
-  ShoppingBag,
-  Heart,
-  Search,
-  Filter,
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import StatisticsCards from "@/components/dashboard/StatisticsCards";
+import SchoolCard from "@/components/dashboard/SchoolCard";
+import ActivityCard from "@/components/dashboard/ActivityCard";
+import SupplyCard from "@/components/dashboard/SupplyCard";
+import SearchAndFilter from "@/components/dashboard/SearchAndFilter";
 
 interface SchoolCard {
   id: string;
@@ -51,7 +41,6 @@ interface SchoolItem {
 }
 
 export default function Dashboard() {
-  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
   
@@ -275,30 +264,8 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-primary">Welcome to Scholar Plus</h1>
-          <p className="text-muted-foreground">Your complete educational companion</p>
-        </div>
-        <Button onClick={() => navigate("/admin")}>
-          Admin Panel
-          <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-3">
-        {statistics.map((stat, index) => (
-          <Card key={index}>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-              <stat.icon className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <DashboardHeader />
+      <StatisticsCards />
 
       <Tabs defaultValue="schools" className="space-y-4">
         <TabsList>
@@ -310,31 +277,7 @@ export default function Dashboard() {
         <TabsContent value="schools" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {schools.map((school) => (
-              <Card key={school.id} className="overflow-hidden">
-                <div className="aspect-video relative">
-                  <img 
-                    src={school.image} 
-                    alt={school.name}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-lg">{school.name}</CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="font-medium">{school.rating}</span>
-                    <span className="text-muted-foreground">({school.totalRatings})</span>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <p className="text-sm text-muted-foreground">{school.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {school.preferredFor.map((pref, idx) => (
-                      <Badge key={idx} variant="secondary">{pref}</Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <SchoolCard key={school.id} {...school} />
             ))}
           </div>
         </TabsContent>
@@ -342,110 +285,22 @@ export default function Dashboard() {
         <TabsContent value="activities" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {activities.map((activity) => (
-              <Card key={activity.id} className="overflow-hidden">
-                <div className="aspect-video relative">
-                  <img 
-                    src={activity.image} 
-                    alt={activity.name}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-lg">{activity.name}</CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="font-medium">{activity.rating}</span>
-                    <span className="text-muted-foreground">({activity.totalRatings})</span>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <p className="text-sm text-muted-foreground">{activity.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {activity.preferredFor.map((pref, idx) => (
-                      <Badge key={idx} variant="secondary">{pref}</Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <ActivityCard key={activity.id} {...activity} />
             ))}
           </div>
         </TabsContent>
 
         <TabsContent value="supplies" className="space-y-4">
-          <div className="flex gap-4 flex-col md:flex-row md:items-center">
-            <div className="relative flex-1">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search supplies..."
-                className="pl-8"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            <select
-              className="border rounded p-2"
-              value={activeFilter}
-              onChange={(e) => setActiveFilter(e.target.value)}
-            >
-              <option value="all">All Categories</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>{category}</option>
-              ))}
-            </select>
-          </div>
-
+          <SearchAndFilter
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            activeFilter={activeFilter}
+            setActiveFilter={setActiveFilter}
+            categories={categories}
+          />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {filterItems(schoolItems).map((item) => (
-              <Card 
-                key={item.id} 
-                className="overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] group"
-              >
-                <div className="aspect-video relative">
-                  <img 
-                    src={item.image} 
-                    alt={item.name}
-                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <Button
-                    size="icon"
-                    variant="secondary"
-                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  >
-                    <Heart className="h-4 w-4" />
-                  </Button>
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-lg">{item.name}</CardTitle>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-lg">${item.price}</span>
-                    <Badge variant="outline">SKU: {item.sku}</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <p className="text-sm text-muted-foreground">{item.description}</p>
-                  <Badge variant="secondary">{item.category}</Badge>
-                  {item.colors && (
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium">Available Colors:</p>
-                      <div className="flex flex-wrap gap-2">
-                        {item.colors.map((color) => (
-                          <Badge key={color} variant="outline">{color}</Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  {item.sizes && (
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium">Available Sizes:</p>
-                      <div className="flex flex-wrap gap-2">
-                        {item.sizes.map((size) => (
-                          <Badge key={size} variant="outline">{size}</Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              <SupplyCard key={item.id} {...item} />
             ))}
           </div>
         </TabsContent>
