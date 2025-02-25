@@ -31,7 +31,7 @@ export default function SchoolCard({
         />
       </div>
       <CardHeader>
-        <CardTitle className="text-lg">{name}</CardTitle>
+        <CardTitle className="text-lg" style={{ color: "#0B6623" }}>{name}</CardTitle>
         <div className="flex items-center gap-2">
           <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
           <span className="font-medium">{rating}</span>
