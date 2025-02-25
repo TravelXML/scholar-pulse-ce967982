@@ -149,10 +149,10 @@ export default function Home() {
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <h1 className="text-3xl font-bold" style={{ color: "#0B6623" }}>Dashboard</h1>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm">
-            <Bell className="h-4 w-4 mr-2" />
+            <Bell className="h-4 w-4 mr-2" style={{ color: "#0B6623" }} />
             {notifications.filter(n => n.unread).length > 0 && (
               <Badge className="ml-1 bg-red-500 text-white">{notifications.filter(n => n.unread).length}</Badge>
             )}
@@ -168,8 +168,8 @@ export default function Home() {
         {/* School Info Card */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <BookOpen className="h-5 w-5 mr-2" />
+            <CardTitle className="flex items-center" style={{ color: "#0B6623" }}>
+              <BookOpen className="h-5 w-5 mr-2" style={{ color: "#0B6623" }} />
               My School
             </CardTitle>
             <CardDescription>Information about your school</CardDescription>
@@ -193,8 +193,8 @@ export default function Home() {
         {/* Performance Card */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <BarChart className="h-5 w-5 mr-2" />
+            <CardTitle className="flex items-center" style={{ color: "#0B6623" }}>
+              <BarChart className="h-5 w-5 mr-2" style={{ color: "#0B6623" }} />
               Performance Overview
             </CardTitle>
             <CardDescription>Your academic performance compared to class averages</CardDescription>
@@ -211,7 +211,7 @@ export default function Home() {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="score" fill="#8884d8" name="Your Score" />
+                  <Bar dataKey="score" fill="#0B6623" name="Your Score" />
                   <Bar dataKey="average" fill="#82ca9d" name="Class Average" />
                   <Bar dataKey="best" fill="#ffc658" name="Best Score" />
                 </RechartsBarChart>
@@ -223,7 +223,7 @@ export default function Home() {
         {/* Quick Actions */}
         <Card>
           <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
+            <CardTitle style={{ color: "#0B6623" }}>Quick Actions</CardTitle>
             <CardDescription>Common tasks and actions</CardDescription>
           </CardHeader>
           <CardContent>
@@ -231,13 +231,13 @@ export default function Home() {
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="outline" className="w-full justify-start">
-                    <Video className="h-4 w-4 mr-2" />
+                    <Video className="h-4 w-4 mr-2" style={{ color: "#0B6623" }} />
                     Join Online Class
                   </Button>
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle>Join Online Class</DialogTitle>
+                    <DialogTitle style={{ color: "#0B6623" }}>Join Online Class</DialogTitle>
                     <DialogDescription>Select a class to join from the available options</DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4 py-4">
@@ -245,7 +245,7 @@ export default function Home() {
                       {["Math - 10:00 AM", "Science - 11:30 AM", "English - 2:00 PM"].map((cls, i) => (
                         <Button key={i} variant="outline" className="w-full justify-between">
                           {cls}
-                          <ChevronRight className="h-4 w-4" />
+                          <ChevronRight className="h-4 w-4" style={{ color: "#0B6623" }} />
                         </Button>
                       ))}
                     </div>
@@ -256,13 +256,13 @@ export default function Home() {
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="outline" className="w-full justify-start">
-                    <CalendarIcon className="h-4 w-4 mr-2" />
+                    <CalendarIcon className="h-4 w-4 mr-2" style={{ color: "#0B6623" }} />
                     Apply for Leave
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-md">
                   <DialogHeader>
-                    <DialogTitle>Apply for Leave</DialogTitle>
+                    <DialogTitle style={{ color: "#0B6623" }}>Apply for Leave</DialogTitle>
                     <DialogDescription>Select date range and provide reason</DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4 py-4">
@@ -296,7 +296,7 @@ export default function Home() {
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button onClick={handleSubmitLeave}>Submit Request</Button>
+                    <Button onClick={handleSubmitLeave} style={{ backgroundColor: "#0B6623" }}>Submit Request</Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
@@ -307,7 +307,7 @@ export default function Home() {
         {/* Holidays Card */}
         <Card>
           <CardHeader>
-            <CardTitle>Upcoming Holidays</CardTitle>
+            <CardTitle style={{ color: "#0B6623" }}>Upcoming Holidays</CardTitle>
             <CardDescription>School holidays and events</CardDescription>
           </CardHeader>
           <CardContent>
@@ -316,7 +316,7 @@ export default function Home() {
                 <div key={idx} className="flex justify-between items-center">
                   <div className="flex items-center">
                     <div className="bg-primary/10 p-2 rounded-full mr-3">
-                      <CalendarIcon className="h-4 w-4 text-primary" />
+                      <CalendarIcon className="h-4 w-4" style={{ color: "#0B6623" }} />
                     </div>
                     <div>
                       <p className="font-medium">{holiday.name}</p>
@@ -325,7 +325,7 @@ export default function Home() {
                   </div>
                 </div>
               ))}
-              <Button variant="link" className="p-0" onClick={() => window.location.href="/calendar"}>
+              <Button variant="link" className="p-0" style={{ color: "#0B6623" }} onClick={() => window.location.href="/calendar"}>
                 View full calendar
               </Button>
             </div>
@@ -335,8 +335,8 @@ export default function Home() {
         {/* Purchases */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <ShoppingCart className="h-5 w-5 mr-2" />
+            <CardTitle className="flex items-center" style={{ color: "#0B6623" }}>
+              <ShoppingCart className="h-5 w-5 mr-2" style={{ color: "#0B6623" }} />
               Recent Purchases
             </CardTitle>
             <CardDescription>Your recent transactions</CardDescription>
@@ -352,7 +352,7 @@ export default function Home() {
                   <p className="font-semibold">{purchase.price}</p>
                 </div>
               ))}
-              <Button variant="link" className="p-0">View all purchases</Button>
+              <Button variant="link" className="p-0" style={{ color: "#0B6623" }}>View all purchases</Button>
             </div>
           </CardContent>
         </Card>
@@ -360,8 +360,8 @@ export default function Home() {
         {/* Notifications */}
         <Card className="md:col-span-2">
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <Bell className="h-5 w-5 mr-2" />
+            <CardTitle className="flex items-center" style={{ color: "#0B6623" }}>
+              <Bell className="h-5 w-5 mr-2" style={{ color: "#0B6623" }} />
               Notifications
             </CardTitle>
             <CardDescription>Messages from teachers and school</CardDescription>
@@ -387,13 +387,13 @@ export default function Home() {
                       <p className="text-sm mt-1">{notification.message}</p>
                       <div className="mt-2">
                         <Button variant="outline" size="sm">
-                          <MessageSquare className="h-3 w-3 mr-1" />
+                          <MessageSquare className="h-3 w-3 mr-1" style={{ color: "#0B6623" }} />
                           Reply
                         </Button>
                       </div>
                     </div>
                     {notification.unread && (
-                      <div className="w-2 h-2 rounded-full bg-primary mt-2"></div>
+                      <div className="w-2 h-2 rounded-full bg-[#0B6623] mt-2"></div>
                     )}
                   </div>
                 ))}
