@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -37,7 +38,7 @@ interface EmergencyContact {
 
 interface TimelineEvent {
   id: string;
-  type: "academic" | "medical" | "counseling" | "award" | "flag";
+  type: "academic" | "medical" | "counseling" | "award" | "flag" | "leave";
   title: string;
   date: string;
   description: string;
@@ -62,12 +63,22 @@ const performanceData = [
   { month: "Jun", academic: 89, mental: 90, physical: 91 },
 ];
 
+const subjectPerformanceData = [
+  { month: "Jan", English: 85, Math: 78, Science: 88, History: 72, Geography: 84 },
+  { month: "Feb", English: 82, Math: 80, Science: 85, History: 75, Geography: 82 },
+  { month: "Mar", English: 88, Math: 85, Science: 90, History: 78, Geography: 86 },
+  { month: "Apr", English: 90, Math: 88, Science: 92, History: 80, Geography: 89 },
+  { month: "May", English: 85, Math: 82, Science: 86, History: 83, Geography: 87 },
+  { month: "Jun", English: 89, Math: 86, Science: 90, History: 85, Geography: 90 },
+];
+
 export default function Profile() {
   const [studentData] = useState({
     name: "John Doe",
     age: "15",
     grade: "10th Standard",
     section: "A",
+    rollNumber: "24",
     bloodGroup: "O+",
     birthDate: "2009-05-15",
     aadharNumber: "XXXX-XXXX-XXXX",
@@ -169,6 +180,18 @@ export default function Profile() {
         subject: "English"
       },
       starred: true
+    },
+    {
+      id: "6",
+      type: "leave",
+      title: "Leave Application Approved",
+      date: "2024-04-10",
+      description: "Leave from April 15 to April 18 approved for family function",
+      category: "Leave",
+      teacher: {
+        name: "Principal Williams",
+        subject: "Administration"
+      }
     }
   ]);
 
@@ -184,6 +207,8 @@ export default function Profile() {
         return <Award className="h-5 w-5" />;
       case "flag":
         return <Flag className="h-5 w-5" />;
+      case "leave":
+        return <CalendarIcon className="h-5 w-5" />;
     }
   };
 
@@ -199,6 +224,8 @@ export default function Profile() {
         return "default";
       case "flag":
         return "outline";
+      case "leave":
+        return "secondary";
     }
   };
 
@@ -211,7 +238,7 @@ export default function Profile() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-semibold">Student Profile</h1>
+          <h1 className="text-3xl font-semibold" style={{ color: "#0B6623" }}>Student Profile</h1>
           <p className="text-muted-foreground">
             {studentData.grade} • {studentData.section} • Academic Year {studentData.academicYear}
           </p>
@@ -224,7 +251,7 @@ export default function Profile() {
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Profile & QR Code</CardTitle>
+            <CardTitle style={{ color: "#0B6623" }}>Profile & QR Code</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex flex-col items-center space-y-4">
@@ -241,7 +268,7 @@ export default function Profile() {
                     variant="secondary"
                     onClick={() => document.getElementById('profile-upload')?.click()}
                   >
-                    <Camera className="h-4 w-4" />
+                    <Camera className="h-4 w-4" style={{ color: "#0B6623" }} />
                   </Button>
                 </label>
                 <Input
@@ -267,7 +294,7 @@ export default function Profile() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Student Progress Overview</CardTitle>
+            <CardTitle style={{ color: "#0B6623" }}>Student Progress Overview</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-[300px]">
@@ -281,7 +308,7 @@ export default function Profile() {
                   <Line 
                     type="monotone" 
                     dataKey="academic" 
-                    stroke="#8884d8" 
+                    stroke="#0B6623" 
                     name="Academic Performance"
                   />
                   <Line 
@@ -304,7 +331,7 @@ export default function Profile() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Personal Details</CardTitle>
+            <CardTitle style={{ color: "#0B6623" }}>Personal Details</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -317,13 +344,19 @@ export default function Profile() {
                 <Input value={studentData.bloodGroup} readOnly />
               </div>
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Grade</label>
-              <Input value={studentData.grade} readOnly />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Grade</label>
+                <Input value={studentData.grade} readOnly />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Section</label>
+                <Input value={studentData.section} readOnly />
+              </div>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Section</label>
-              <Input value={studentData.section} readOnly />
+              <label className="text-sm font-medium">Roll Number</label>
+              <Input value={studentData.rollNumber} readOnly />
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">Birth Date</label>
@@ -338,7 +371,7 @@ export default function Profile() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Family Information</CardTitle>
+            <CardTitle style={{ color: "#0B6623" }}>Family Information</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -364,14 +397,14 @@ export default function Profile() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Emergency Contacts</CardTitle>
+            <CardTitle style={{ color: "#0B6623" }}>Emergency Contacts</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {studentData.emergencyContacts.map((contact, index) => (
                 <div key={index} className="flex items-center gap-4 p-3 rounded-lg border">
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Phone className="h-5 w-5 text-primary" />
+                    <Phone className="h-5 w-5" style={{ color: "#0B6623" }} />
                   </div>
                   <div className="flex-1">
                     <p className="font-medium">{contact.name}</p>
@@ -384,14 +417,63 @@ export default function Profile() {
           </CardContent>
         </Card>
 
+        <Card>
+          <CardHeader>
+            <CardTitle style={{ color: "#0B6623" }}>Subject Performance</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={subjectPerformanceData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line 
+                    type="monotone" 
+                    dataKey="English" 
+                    stroke="#0B6623" 
+                    name="English"
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="Math" 
+                    stroke="#8884d8" 
+                    name="Math"
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="Science" 
+                    stroke="#82ca9d" 
+                    name="Science"
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="History" 
+                    stroke="#ffc658" 
+                    name="History"
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="Geography" 
+                    stroke="#ff8042" 
+                    name="Geography"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
         <Card className="md:col-span-2">
           <CardHeader>
-            <CardTitle>Physical Status</CardTitle>
+            <CardTitle style={{ color: "#0B6623" }}>Physical Status</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-4">
               <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <HeartPulse className="h-6 w-6 text-primary" />
+                <HeartPulse className="h-6 w-6" style={{ color: "#0B6623" }} />
               </div>
               <div>
                 <h3 className="font-medium">Physically Challenged Status</h3>
@@ -408,9 +490,9 @@ export default function Profile() {
 
         <Card className="md:col-span-2">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Student Timeline</CardTitle>
+            <CardTitle style={{ color: "#0B6623" }}>Student Timeline</CardTitle>
             <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4" />
+              <Filter className="h-4 w-4" style={{ color: "#0B6623" }} />
               <select
                 className="border rounded p-1"
                 value={timelineFilter}
@@ -422,6 +504,7 @@ export default function Profile() {
                 <option value="counseling">Counseling</option>
                 <option value="award">Awards</option>
                 <option value="flag">Teacher Flags</option>
+                <option value="leave">Leave</option>
               </select>
             </div>
           </CardHeader>
@@ -434,13 +517,15 @@ export default function Profile() {
                   <div className="relative">
                     <div className={`
                       h-10 w-10 rounded-full border-2 flex items-center justify-center bg-background
-                      ${event.starred ? 'border-primary' : 'border-border'}
+                      ${event.starred ? 'border-[#0B6623]' : 'border-border'}
                     `}>
-                      {getEventIcon(event.type)}
+                      <div style={{ color: "#0B6623" }}>
+                        {getEventIcon(event.type)}
+                      </div>
                     </div>
                     {event.starred && (
                       <div className="absolute -top-1 -right-1">
-                        <Star className="h-4 w-4 fill-primary text-primary" />
+                        <Star className="h-4 w-4 fill-[#0B6623] text-[#0B6623]" />
                       </div>
                     )}
                   </div>
@@ -481,9 +566,9 @@ export default function Profile() {
                             className="h-8"
                           >
                             {attachment.type === "document" ? (
-                              <FileText className="h-4 w-4 mr-2" />
+                              <FileText className="h-4 w-4 mr-2" style={{ color: "#0B6623" }} />
                             ) : (
-                              <ImageIcon className="h-4 w-4 mr-2" />
+                              <ImageIcon className="h-4 w-4 mr-2" style={{ color: "#0B6623" }} />
                             )}
                             {attachment.name}
                           </Button>
