@@ -2,7 +2,7 @@
 
 **Scholar Plus** is an open-source, all-in-one education management and engagement platform designed to streamline academic reporting, enhance communication among schools, teachers, parents, and students, and manage extracurricular activities. With a mobile-first approach and a clean, minimalist design accentuated in forest green (#OB6623), Scholar Plus provides a unified solution from admissions and academic performance tracking to health monitoring and campus facility access via QR codes.
 
-Stay tuned for more updates as I continue refining and mapping out this version whenever I get the time.
+
 ---
 
 ## Table of Contents
