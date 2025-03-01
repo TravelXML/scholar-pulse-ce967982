@@ -11,6 +11,7 @@ import Admin from "./pages/Admin";
 import Messages from "./pages/Messages";
 import Calendar from "./pages/Calendar";
 import Profile from "./pages/Profile";
+import Academic from "./pages/Academic";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/messages" element={<Messages />} />
             <Route path="/calendar" element={<Calendar />} />
+            <Route path="/academic" element={<Academic />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AppLayout>
