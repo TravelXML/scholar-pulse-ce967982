@@ -95,13 +95,13 @@ Scholar Plus bridges the gap between educational institutions and their stakehol
 - **Overview Cards:**  
   - Display key metrics in a two-card-per-row layout for Schools, Activities, and School Supplies.
   - Each card includes intuitive icons (all styled in forest green #OB6623), interactive hover effects, and click actions.
-    ![image](https://github.com/user-attachments/assets/c1383698-c453-4eea-b067-408fdc9de910)
+![image](https://github.com/user-attachments/assets/c1383698-c453-4eea-b067-408fdc9de910)
 
 
 - **School Supplies Module:**
--  ![image](https://github.com/user-attachments/assets/3b6452ec-8bbb-4402-a74a-754726b9729d)
--  ![image](https://github.com/user-attachments/assets/946fdd2d-fb50-4bb5-bd20-ccea7fb89e00)
--  ![image](https://github.com/user-attachments/assets/c18e1f50-c66c-450a-b07a-27ee5580d142)
+  ![image](https://github.com/user-attachments/assets/3b6452ec-8bbb-4402-a74a-754726b9729d)
+  ![image](https://github.com/user-attachments/assets/946fdd2d-fb50-4bb5-bd20-ccea7fb89e00)
+  ![image](https://github.com/user-attachments/assets/c18e1f50-c66c-450a-b07a-27ee5580d142)
 
 
   - **Expanded Categories:**  
