@@ -242,29 +242,6 @@ Scholar Plus bridges the gap between educational institutions and their stakehol
 
 ---
 
-## Project Structure
-
-```
-scholar-plus/
-├── src/
-│   ├── components/
-│   │   ├── StudentProfile/
-│   │   ├── Dashboard/
-│   │   ├── AdminPanel/
-│   │   ├── HomePage/
-│   │   └── Common/         // Shared UI components (cards, buttons, filters)
-│   ├── services/           // API and Supabase integration
-│   ├── assets/             // Images, icons, and fonts (all styled in forest green #OB6623)
-│   └── styles/             // Global and component-specific styles
-├── public/
-│   └── index.html
-├── .env
-├── package.json
-└── README.md
-```
-
----
-
 ## Contributing
 
 We welcome contributions to Scholar Plus! To contribute:
