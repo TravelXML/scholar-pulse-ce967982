@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,6 +14,10 @@ import {
   Search,
   Filter,
   Plus,
+  ShoppingBag,
+  Building,
+  BookOpen,
+  Upload,
 } from "lucide-react";
 import {
   LineChart,
@@ -30,6 +33,10 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import SchoolForm from "@/components/admin/SchoolForm";
+import ActivityForm from "@/components/admin/ActivityForm";
+import ProductForm from "@/components/admin/ProductForm";
+import GovernmentActivityForm from "@/components/admin/GovernmentActivityForm";
 
 const userActivityData = [
   { month: "Jan", students: 65, schools: 4, events: 12 },
@@ -104,8 +111,8 @@ export default function Admin() {
     dateRange: "all",
   });
   const [showFilters, setShowFilters] = useState(false);
+  const [activeUploadTab, setActiveUploadTab] = useState("school");
 
-  // CRUD Operations
   const handleAdd = (type: "school" | "activity") => {
     console.log(`Adding new ${type}`);
   };
@@ -129,19 +136,20 @@ export default function Admin() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-semibold">Admin Panel</h1>
-        <Button>Download Report</Button>
+        <h1 className="text-3xl font-semibold" style={{ color: "#0B6623" }}>Admin Panel</h1>
+        <Button style={{ backgroundColor: "#0B6623" }}>Download Report</Button>
       </div>
 
       <Tabs defaultValue="approval" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="approval">Content Approval</TabsTrigger>
-          <TabsTrigger value="schools">Schools</TabsTrigger>
-          <TabsTrigger value="activities">Activities</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        <TabsList className="bg-slate-100">
+          <TabsTrigger value="approval" className="data-[state=active]:bg-[#0B6623] data-[state=active]:text-white">Content Approval</TabsTrigger>
+          <TabsTrigger value="schools" className="data-[state=active]:bg-[#0B6623] data-[state=active]:text-white">Schools</TabsTrigger>
+          <TabsTrigger value="activities" className="data-[state=active]:bg-[#0B6623] data-[state=active]:text-white">Activities</TabsTrigger>
+          <TabsTrigger value="products" className="data-[state=active]:bg-[#0B6623] data-[state=active]:text-white">Products</TabsTrigger>
+          <TabsTrigger value="upload" className="data-[state=active]:bg-[#0B6623] data-[state=active]:text-white">Upload Content</TabsTrigger>
+          <TabsTrigger value="analytics" className="data-[state=active]:bg-[#0B6623] data-[state=active]:text-white">Analytics</TabsTrigger>
         </TabsList>
 
-        {/* Search and Filter Section */}
         <div className="flex gap-4">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -176,6 +184,7 @@ export default function Admin() {
                   <option value="all">All Types</option>
                   <option value="school">School</option>
                   <option value="event">Event</option>
+                  <option value="product">Product</option>
                 </select>
               </div>
               <div>
@@ -227,7 +236,6 @@ export default function Admin() {
           </Card>
         )}
 
-        {/* Content Approval Tab */}
         <TabsContent value="approval" className="space-y-4">
           {pendingContent.map((item) => (
             <Card key={item.id}>
@@ -245,7 +253,7 @@ export default function Admin() {
                     <XCircle className="mr-2 h-4 w-4" />
                     Reject
                   </Button>
-                  <Button size="sm" onClick={() => handleApprove(item.id)}>
+                  <Button size="sm" onClick={() => handleApprove(item.id)} style={{ backgroundColor: "#0B6623" }}>
                     <CheckCircle2 className="mr-2 h-4 w-4" />
                     Approve
                   </Button>
@@ -255,12 +263,11 @@ export default function Admin() {
           ))}
         </TabsContent>
 
-        {/* Schools Management Tab */}
         <TabsContent value="schools" className="space-y-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>School Management</CardTitle>
-              <Button onClick={() => handleAdd("school")}>
+              <Button onClick={() => handleAdd("school")} style={{ backgroundColor: "#0B6623" }}>
                 <Plus className="mr-2 h-4 w-4" />
                 Add School
               </Button>
@@ -305,12 +312,11 @@ export default function Admin() {
           </Card>
         </TabsContent>
 
-        {/* Activities Management Tab */}
         <TabsContent value="activities" className="space-y-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Activity Management</CardTitle>
-              <Button onClick={() => handleAdd("activity")}>
+              <Button onClick={() => handleAdd("activity")} style={{ backgroundColor: "#0B6623" }}>
                 <Plus className="mr-2 h-4 w-4" />
                 Add Activity
               </Button>
@@ -355,7 +361,106 @@ export default function Admin() {
           </Card>
         </TabsContent>
 
-        {/* Analytics Tab */}
+        <TabsContent value="products" className="space-y-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Product Management</CardTitle>
+              <Button style={{ backgroundColor: "#0B6623" }}>
+                <Plus className="mr-2 h-4 w-4" />
+                Add Product
+              </Button>
+            </CardHeader>
+            <CardContent>
+              <div className="rounded-md border">
+                <div className="grid grid-cols-7 gap-4 p-4 font-medium">
+                  <div>Product Name</div>
+                  <div>Category</div>
+                  <div>Price</div>
+                  <div>SKU</div>
+                  <div>Stock</div>
+                  <div>Status</div>
+                  <div>Actions</div>
+                </div>
+                <div className="grid grid-cols-7 gap-4 p-4 border-t items-center">
+                  <div>Premium Ergonomic Backpack</div>
+                  <div className="text-muted-foreground">Backpacks & Bags</div>
+                  <div>$49.99</div>
+                  <div>BAG-001</div>
+                  <div>250</div>
+                  <div><Badge variant="outline">In Stock</Badge></div>
+                  <div className="flex gap-2">
+                    <Button variant="ghost" size="sm">Edit</Button>
+                    <Button variant="ghost" size="sm">Delete</Button>
+                  </div>
+                </div>
+                <div className="grid grid-cols-7 gap-4 p-4 border-t items-center">
+                  <div>Complete Stationery Set</div>
+                  <div className="text-muted-foreground">Stationery & Supplies</div>
+                  <div>$24.99</div>
+                  <div>STAT-001</div>
+                  <div>500</div>
+                  <div><Badge variant="outline">In Stock</Badge></div>
+                  <div className="flex gap-2">
+                    <Button variant="ghost" size="sm">Edit</Button>
+                    <Button variant="ghost" size="sm">Delete</Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="upload" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Upload Content</CardTitle>
+              <p className="text-sm text-muted-foreground mt-2">Add new schools, activities, products, or government initiatives.</p>
+            </CardHeader>
+            <CardContent>
+              <Tabs 
+                value={activeUploadTab} 
+                onValueChange={setActiveUploadTab}
+                className="space-y-6"
+              >
+                <TabsList className="bg-slate-100 w-full justify-start overflow-auto">
+                  <TabsTrigger value="school" className="data-[state=active]:bg-[#0B6623] data-[state=active]:text-white">
+                    <School className="mr-2 h-4 w-4" />
+                    School
+                  </TabsTrigger>
+                  <TabsTrigger value="activity" className="data-[state=active]:bg-[#0B6623] data-[state=active]:text-white">
+                    <Calendar className="mr-2 h-4 w-4" />
+                    Activity
+                  </TabsTrigger>
+                  <TabsTrigger value="product" className="data-[state=active]:bg-[#0B6623] data-[state=active]:text-white">
+                    <ShoppingBag className="mr-2 h-4 w-4" />
+                    Product
+                  </TabsTrigger>
+                  <TabsTrigger value="government" className="data-[state=active]:bg-[#0B6623] data-[state=active]:text-white">
+                    <Building className="mr-2 h-4 w-4" />
+                    Government Activity
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="school" className="mt-4">
+                  <SchoolForm />
+                </TabsContent>
+
+                <TabsContent value="activity" className="mt-4">
+                  <ActivityForm />
+                </TabsContent>
+
+                <TabsContent value="product" className="mt-4">
+                  <ProductForm />
+                </TabsContent>
+
+                <TabsContent value="government" className="mt-4">
+                  <GovernmentActivityForm />
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         <TabsContent value="analytics" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
@@ -370,7 +475,7 @@ export default function Admin() {
                       <XAxis dataKey="month" />
                       <YAxis />
                       <Tooltip />
-                      <Line type="monotone" dataKey="students" stroke="#8884d8" />
+                      <Line type="monotone" dataKey="students" stroke="#0B6623" />
                       <Line type="monotone" dataKey="schools" stroke="#82ca9d" />
                     </LineChart>
                   </ResponsiveContainer>
@@ -390,7 +495,7 @@ export default function Admin() {
                       <XAxis dataKey="month" />
                       <YAxis />
                       <Tooltip />
-                      <Bar dataKey="events" fill="#8884d8" />
+                      <Bar dataKey="events" fill="#0B6623" />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -420,12 +525,40 @@ export default function Admin() {
                         {activityDistribution.map((entry, index) => (
                           <Cell
                             key={`cell-${index}`}
-                            fill={COLORS[index % COLORS.length]}
+                            fill={index === 0 ? "#0B6623" : COLORS[index % COLORS.length]}
                           />
                         ))}
                       </Pie>
                       <Tooltip />
                     </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Content Submissions</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      layout="vertical"
+                      data={[
+                        { type: "Schools", count: 25 },
+                        { type: "Activities", count: 42 },
+                        { type: "Products", count: 78 },
+                        { type: "Gov. Events", count: 15 },
+                      ]}
+                      margin={{ left: 80 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis type="number" />
+                      <YAxis dataKey="type" type="category" />
+                      <Tooltip />
+                      <Bar dataKey="count" fill="#0B6623" />
+                    </BarChart>
                   </ResponsiveContainer>
                 </div>
               </CardContent>
