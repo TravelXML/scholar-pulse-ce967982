@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { 
   Card, 
@@ -106,9 +107,10 @@ export default function Home() {
         </div>
       </header>
       <main className="flex-1 max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        {/* First Section: Leave Application followed by Notifications and Quick Access */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Overview Section */}
-          <div className="md:col-span-2 space-y-4">
+          {/* Leave Application */}
+          <div className="md:col-span-2">
             <Card>
               <CardHeader>
                 <CardTitle>Leave Application</CardTitle>
@@ -152,53 +154,10 @@ export default function Home() {
                 }}>Apply for Leave</Button>
               </CardFooter>
             </Card>
-
-            {/* Performance Overview */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Performance Overview</CardTitle>
-                <CardDescription>See how your child is performing in different subjects.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <RechartsBarChart data={performanceData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="subject" />
-                    <YAxis domain={[0, 100]} />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="score" fill="#8884d8" />
-                    <Bar dataKey="average" fill="#82ca9d" />
-                  </RechartsBarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
           </div>
 
-          {/* Quick Access & Notifications */}
+          {/* Notifications and Quick Access Section */}
           <div className="space-y-4">
-            {/* Quick Access */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Quick Access</CardTitle>
-                <CardDescription>Jump to frequently used sections.</CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-4">
-                <Button variant="outline" className="justify-start" onClick={() => navigate("/grades")}>
-                  <BarChart className="mr-2 h-4 w-4" />
-                  View Grades
-                </Button>
-                <Button variant="outline" className="justify-start" onClick={() => navigate("/attendance")}>
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  Check Attendance
-                </Button>
-                <Button variant="outline" className="justify-start" onClick={() => navigate("/messages")}>
-                  <MessageSquare className="mr-2 h-4 w-4" />
-                  Send a Message
-                </Button>
-              </CardContent>
-            </Card>
-
             {/* Notifications */}
             <Card>
               <CardHeader>
@@ -228,7 +187,52 @@ export default function Home() {
                 </ScrollArea>
               </CardContent>
             </Card>
+
+            {/* Quick Access */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Quick Access</CardTitle>
+                <CardDescription>Jump to frequently used sections.</CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <Button variant="outline" className="justify-start" onClick={() => navigate("/grades")}>
+                  <BarChart className="mr-2 h-4 w-4" />
+                  View Grades
+                </Button>
+                <Button variant="outline" className="justify-start" onClick={() => navigate("/attendance")}>
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  Check Attendance
+                </Button>
+                <Button variant="outline" className="justify-start" onClick={() => navigate("/messages")}>
+                  <MessageSquare className="mr-2 h-4 w-4" />
+                  Send a Message
+                </Button>
+              </CardContent>
+            </Card>
           </div>
+        </div>
+
+        {/* Performance Overview Section */}
+        <div className="mt-8">
+          <Card>
+            <CardHeader>
+              <CardTitle>Performance Overview</CardTitle>
+              <CardDescription>See how your child is performing in different subjects.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={300}>
+                <RechartsBarChart data={performanceData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="subject" />
+                  <YAxis domain={[0, 100]} />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="score" fill="#8884d8" />
+                  <Bar dataKey="average" fill="#82ca9d" />
+                </RechartsBarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Recent Activity & Purchases */}
@@ -291,7 +295,7 @@ export default function Home() {
 
         {/* Tabs Example & Top Products */}
         <div className="mt-8">
-          <Tabs defaultvalue="all" className="w-full">
+          <Tabs defaultValue="all" className="w-full">
             <TabsList>
               <TabsTrigger value="all" onClick={() => setActiveTab("all")}>All</TabsTrigger>
               <TabsTrigger value="grades" onClick={() => setActiveTab("grades")}>Grades</TabsTrigger>
