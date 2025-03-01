@@ -13,6 +13,9 @@ import Calendar from "./pages/Calendar";
 import Profile from "./pages/Profile";
 import Academic from "./pages/Academic";
 import NotFound from "./pages/NotFound";
+import SchoolClassUpload from "./pages/SchoolClassUpload";
+import GovernmentActivities from "./pages/GovernmentActivities";
+import ProductUpload from "./pages/ProductUpload";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +34,9 @@ const App = () => (
             <Route path="/messages" element={<Messages />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/academic" element={<Academic />} />
+            <Route path="/school-upload" element={<SchoolClassUpload />} />
+            <Route path="/government-activities" element={<GovernmentActivities />} />
+            <Route path="/product-upload" element={<ProductUpload />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AppLayout>

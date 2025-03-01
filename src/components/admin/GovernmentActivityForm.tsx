@@ -6,29 +6,35 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { X } from "lucide-react";
 import { toast } from "sonner";
 
 export default function GovernmentActivityForm() {
   const [formData, setFormData] = useState({
     title: "",
-    organizer: "",
-    type: "competition",
-    level: "state",
     description: "",
-    eligibility: "",
-    venue: "",
+    organizerName: "",
+    organizerType: "",
     startDate: "",
     endDate: "",
     registrationDeadline: "",
-    contactPerson: "",
+    venue: "",
     contactEmail: "",
     contactPhone: "",
     website: "",
+    eligibilityCriteria: "",
+    applicationProcess: "",
     prizes: "",
-    status: "upcoming",
+    isRecurring: false,
+    isFree: false,
+    registrationFee: "",
     image: ""
   });
+
+  const [categories, setCategories] = useState<string[]>([]);
+  const [newCategory, setNewCategory] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -39,36 +45,58 @@ export default function GovernmentActivityForm() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleCheckboxChange = (name: string, checked: boolean) => {
+    setFormData(prev => ({ ...prev, [name]: checked }));
+  };
+
+  const addCategory = () => {
+    if (newCategory && !categories.includes(newCategory)) {
+      setCategories([...categories, newCategory]);
+      setNewCategory("");
+    }
+  };
+
+  const removeCategory = (category: string) => {
+    setCategories(categories.filter(c => c !== category));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Government Activity form submitted:", formData);
+    const activityData = {
+      ...formData,
+      categories
+    };
+    console.log("Government activity form submitted:", activityData);
     toast.success("Activity information submitted for review");
+    
     // Reset form
     setFormData({
       title: "",
-      organizer: "",
-      type: "competition",
-      level: "state",
       description: "",
-      eligibility: "",
-      venue: "",
+      organizerName: "",
+      organizerType: "",
       startDate: "",
       endDate: "",
       registrationDeadline: "",
-      contactPerson: "",
+      venue: "",
       contactEmail: "",
       contactPhone: "",
       website: "",
+      eligibilityCriteria: "",
+      applicationProcess: "",
       prizes: "",
-      status: "upcoming",
+      isRecurring: false,
+      isFree: false,
+      registrationFee: "",
       image: ""
     });
+    setCategories([]);
   };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg font-semibold" style={{ color: "#0B6623" }}>Add Government/Official Activity</CardTitle>
+        <CardTitle className="text-lg font-semibold" style={{ color: "#0B6623" }}>Register Government or Educational Activity</CardTitle>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
@@ -84,52 +112,14 @@ export default function GovernmentActivityForm() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="organizer">Organizing Authority *</Label>
+              <Label htmlFor="organizerName">Organizer Name *</Label>
               <Input 
-                id="organizer"
-                name="organizer"
-                value={formData.organizer}
+                id="organizerName"
+                name="organizerName"
+                value={formData.organizerName}
                 onChange={handleChange}
                 required
               />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="type">Activity Type</Label>
-              <Select 
-                value={formData.type} 
-                onValueChange={(value) => handleSelectChange("type", value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="competition">Competition</SelectItem>
-                  <SelectItem value="fair">Fair</SelectItem>
-                  <SelectItem value="workshop">Workshop</SelectItem>
-                  <SelectItem value="seminar">Seminar</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="level">Activity Level</Label>
-              <Select 
-                value={formData.level} 
-                onValueChange={(value) => handleSelectChange("level", value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select level" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="district">District</SelectItem>
-                  <SelectItem value="state">State</SelectItem>
-                  <SelectItem value="national">National</SelectItem>
-                  <SelectItem value="international">International</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
           </div>
 
@@ -146,26 +136,23 @@ export default function GovernmentActivityForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="eligibility">Eligibility *</Label>
-            <Textarea 
-              id="eligibility"
-              name="eligibility"
-              value={formData.eligibility}
-              onChange={handleChange}
-              rows={2}
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="venue">Venue *</Label>
-            <Input 
-              id="venue"
-              name="venue"
-              value={formData.venue}
-              onChange={handleChange}
-              required
-            />
+            <Label htmlFor="organizerType">Organizer Type *</Label>
+            <Select 
+              value={formData.organizerType} 
+              onValueChange={(value) => handleSelectChange("organizerType", value)}
+            >
+              <SelectTrigger id="organizerType">
+                <SelectValue placeholder="Select organizer type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="State Government">State Government</SelectItem>
+                <SelectItem value="Central Government">Central Government</SelectItem>
+                <SelectItem value="Educational Institution">Educational Institution</SelectItem>
+                <SelectItem value="Non-Profit Organization">Non-Profit Organization</SelectItem>
+                <SelectItem value="External Provider">External Provider</SelectItem>
+                <SelectItem value="Other">Other</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -204,17 +191,18 @@ export default function GovernmentActivityForm() {
             </div>
           </div>
 
+          <div className="space-y-2">
+            <Label htmlFor="venue">Venue *</Label>
+            <Input 
+              id="venue"
+              name="venue"
+              value={formData.venue}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="contactPerson">Contact Person *</Label>
-              <Input 
-                id="contactPerson"
-                name="contactPerson"
-                value={formData.contactPerson}
-                onChange={handleChange}
-                required
-              />
-            </div>
             <div className="space-y-2">
               <Label htmlFor="contactEmail">Contact Email *</Label>
               <Input 
@@ -227,29 +215,51 @@ export default function GovernmentActivityForm() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="contactPhone">Contact Phone *</Label>
+              <Label htmlFor="contactPhone">Contact Phone</Label>
               <Input 
                 id="contactPhone"
                 name="contactPhone"
                 value={formData.contactPhone}
                 onChange={handleChange}
-                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="website">Website</Label>
+              <Input 
+                id="website"
+                name="website"
+                value={formData.website}
+                onChange={handleChange}
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="website">Website</Label>
-            <Input 
-              id="website"
-              name="website"
-              value={formData.website}
+            <Label htmlFor="eligibilityCriteria">Eligibility Criteria *</Label>
+            <Textarea 
+              id="eligibilityCriteria"
+              name="eligibilityCriteria"
+              value={formData.eligibilityCriteria}
               onChange={handleChange}
+              rows={3}
+              required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="prizes">Prizes/Incentives</Label>
+            <Label htmlFor="applicationProcess">Application Process *</Label>
+            <Textarea 
+              id="applicationProcess"
+              name="applicationProcess"
+              value={formData.applicationProcess}
+              onChange={handleChange}
+              rows={3}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="prizes">Prizes/Recognition</Label>
             <Textarea 
               id="prizes"
               name="prizes"
@@ -259,26 +269,67 @@ export default function GovernmentActivityForm() {
             />
           </div>
 
+          <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="isRecurring" 
+                checked={formData.isRecurring}
+                onCheckedChange={(checked) => handleCheckboxChange("isRecurring", checked as boolean)}
+              />
+              <Label htmlFor="isRecurring">This is a recurring event</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="isFree" 
+                checked={formData.isFree}
+                onCheckedChange={(checked) => {
+                  handleCheckboxChange("isFree", checked as boolean);
+                  if (checked) {
+                    setFormData(prev => ({ ...prev, registrationFee: "" }));
+                  }
+                }}
+              />
+              <Label htmlFor="isFree">This event is free</Label>
+            </div>
+          </div>
+
+          {!formData.isFree && (
+            <div className="space-y-2">
+              <Label htmlFor="registrationFee">Registration Fee ($)</Label>
+              <Input 
+                id="registrationFee"
+                name="registrationFee"
+                type="number"
+                value={formData.registrationFee}
+                onChange={handleChange}
+              />
+            </div>
+          )}
+
+          {/* Categories */}
           <div className="space-y-2">
-            <Label>Status</Label>
-            <RadioGroup 
-              value={formData.status}
-              onValueChange={(value) => handleSelectChange("status", value)}
-              className="flex space-x-4"
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="upcoming" id="upcoming" />
-                <Label htmlFor="upcoming">Upcoming</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="ongoing" id="ongoing" />
-                <Label htmlFor="ongoing">Ongoing</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="completed" id="completed" />
-                <Label htmlFor="completed">Completed</Label>
-              </div>
-            </RadioGroup>
+            <Label>Categories</Label>
+            <div className="flex items-center space-x-2">
+              <Input 
+                value={newCategory}
+                onChange={(e) => setNewCategory(e.target.value)}
+                placeholder="Add category (e.g., Science Fair, Competition)"
+              />
+              <Button type="button" onClick={addCategory} style={{ backgroundColor: "#0B6623" }}>
+                Add
+              </Button>
+            </div>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {categories.map((category, index) => (
+                <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                  {category}
+                  <X 
+                    className="h-3 w-3 cursor-pointer" 
+                    onClick={() => removeCategory(category)}
+                  />
+                </Badge>
+              ))}
+            </div>
           </div>
 
           <div className="space-y-2">

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Link } from "react-router-dom";
 import { 
   Book, 
   Calendar, 
@@ -21,7 +22,11 @@ import {
   Newspaper,
   LibraryBig,
   Trophy,
-  Users
+  Users,
+  School,
+  Building,
+  ShoppingBag,
+  Plus
 } from "lucide-react";
 
 export default function Academic() {
@@ -39,6 +44,75 @@ export default function Academic() {
           </Button>
           <Button>View Calendar</Button>
         </div>
+      </div>
+
+      {/* Admin Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card className="hover:shadow-lg transition-all duration-300">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg" style={{ color: "#0B6623" }}>For Schools</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-full flex items-center justify-center" style={{ backgroundColor: "rgba(11, 102, 35, 0.1)" }}>
+                <School className="h-5 w-5" style={{ color: "#0B6623" }} />
+              </div>
+              <div>
+                <div className="text-sm font-medium">Register your school, classes, and activities</div>
+                <div className="text-sm text-muted-foreground">Add your institution to our platform</div>
+              </div>
+            </div>
+            <Link to="/school-upload">
+              <Button className="w-full" style={{ backgroundColor: "#0B6623" }}>
+                <Plus className="mr-2 h-4 w-4" /> Add School Content
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-all duration-300">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg" style={{ color: "#0B6623" }}>For Activity Providers</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-full flex items-center justify-center" style={{ backgroundColor: "rgba(11, 102, 35, 0.1)" }}>
+                <Building className="h-5 w-5" style={{ color: "#0B6623" }} />
+              </div>
+              <div>
+                <div className="text-sm font-medium">Register government & external activities</div>
+                <div className="text-sm text-muted-foreground">Science fairs, competitions, and events</div>
+              </div>
+            </div>
+            <Link to="/government-activities">
+              <Button className="w-full" style={{ backgroundColor: "#0B6623" }}>
+                <Plus className="mr-2 h-4 w-4" /> Add Activities
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-all duration-300">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg" style={{ color: "#0B6623" }}>For Sellers</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-full flex items-center justify-center" style={{ backgroundColor: "rgba(11, 102, 35, 0.1)" }}>
+                <ShoppingBag className="h-5 w-5" style={{ color: "#0B6623" }} />
+              </div>
+              <div>
+                <div className="text-sm font-medium">Sell educational products</div>
+                <div className="text-sm text-muted-foreground">Add products with variants and details</div>
+              </div>
+            </div>
+            <Link to="/product-upload">
+              <Button className="w-full" style={{ backgroundColor: "#0B6623" }}>
+                <Plus className="mr-2 h-4 w-4" /> Manage Products
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Search and Filter Bar */}
