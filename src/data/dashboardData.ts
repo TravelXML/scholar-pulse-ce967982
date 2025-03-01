@@ -1,3 +1,4 @@
+
 export interface SchoolCard {
   id: string;
   name: string;
